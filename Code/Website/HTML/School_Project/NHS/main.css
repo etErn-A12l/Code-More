@@ -1,0 +1,108 @@
+* {
+    box-sizing: border-box;
+}
+
+.vertical-menu {
+    position: fixed;
+    top: 17vh;
+    left: 0%;
+    right: 85%;
+    width: 17vw;
+    height: 100vh;           
+}
+
+.vertical-menu a {
+    background-color: rgba(238, 221, 71, 0.466);
+    color: black;
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+}
+
+.vertical-menu a:hover {
+    background-color:  rgba(158, 146, 38, 0.466);
+}
+
+.vertical-menu a.active {
+    background-color: #2bc3ff;
+    color: white;
+}
+
+.vertical-menu a.passive{
+    background-color: rgb(17, 148, 57);
+    color:white;
+}
+
+.middle {
+    position: absolute;
+    top: 20vh;
+    height: 30vh;
+    left: 17vw;
+    right: 5vw;
+    right:0;
+}
+
+.top{
+    position:fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0%;
+    height: 17vh;
+    background-color: rgb(238, 141, 111);
+    box-shadow: 0px 2px 15px #000;
+}
+
+.img{
+    height: 28vh;
+    border-radius: 10%;
+    box-shadow: 0px 2px 15px #000;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 6px;
+}
+
+.para{
+    position: absolute;
+    top: 50vh;
+    left: 17vw;
+    right: 5vw;
+    right:0;
+}
+
+.btn_next{
+    float: right;
+    height: 1.6em;
+    width: 6em;
+    display: inline-block;
+    font-size: 1.6em;
+    font-weight: bold;
+    line-height: 1.6em;
+    text-align: center;
+    background: #52ff30;
+    border-radius: 2em;
+    margin: 3px;
+}
+
+.btn_prev{
+    float: left;
+    height: 1.6em;
+    width: 6em;
+    display: inline-block;
+    font-size: 1.6em;
+    font-weight: bold;
+    line-height: 1.6em;
+    text-align: center;
+    background: #52ff30;
+    border-radius: 2em;
+    margin: 3px;
+}
+
+.blnk {
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    color: #fff;
+}

@@ -1,0 +1,12 @@
+*auth_token.txt
+*.pyc
+data*
+.vscode
+.idea
+*.json
+.netrc
+log.txt
+accounts/*
+Thumbnails/*
+drive_folder
+cookies.txt

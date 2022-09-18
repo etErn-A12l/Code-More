@@ -1,0 +1,13 @@
+operators 	+ - * / %
+<variable> // variable = variable+1
+variable += 1
+variable -= -1 // variable = variable - (-1)
+operands 
+
+
+Loops are of 3 Types
+
+1. for loop
+2. while loop
+3. do while loop
+# nested loop // usage of multiple loops

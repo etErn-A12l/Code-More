@@ -1,0 +1,31 @@
+
+There are basically 4 types of Containers in STL
+
+1. Sequence Containers:
+
+    a. Vector
+    b. list
+    c. deque
+    d. arrays
+    e. forward_list
+
+2. Container Adaptors:
+
+    a. queue
+    b. priority_queue
+    c. stack
+
+3. Associative Containers:n
+
+    a. set
+    b. multiset
+    c. map
+    d. multimap
+
+4. Unordered Associative Containers:
+
+    a. unordered_set
+    b. unordered_multiset
+    c. unordered_map
+    d. unordered_multimap
+

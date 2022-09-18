@@ -1,0 +1,14 @@
+int
+long
+double
+float
+
+An array/list of characters is called string
+
+// Array's Index always starts from 0
+
+
+
+
+
+

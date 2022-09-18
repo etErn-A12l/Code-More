@@ -1,0 +1,22 @@
+body{
+    background-color: antiquewhite;
+}
+
+h1{
+    color: red;
+    font-size: 3em;
+}
+
+/* img{
+    background-color: aqua;
+} */
+
+/*********************** CLASS SELECTOR ************************/
+
+.bacon{
+    background-color: red;
+}
+
+.joy{
+    background-color: green;
+}

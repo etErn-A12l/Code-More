@@ -1,0 +1,82 @@
+1. Swap Two numbers using 3rd variable and not using 3rd variable
+
+2. Check if a year is leap year or not
+
+3. Check if a number is even or odd
+
+4. Check if a number is prime number or not
+
+5. Calculate the perimeter and area of a circle.
+
+6. Calculate factorial of a given number. // 17.04.2022
+
+7. Print Multiplication table of any number upto 20
+
+8. Manually deploy pow() Function 
+
+9. Find Length of a bridge using speed and length of a train
+
+10. Find the largest and smallest numbers between 3 numbers
+
+// numbers
+
+11. Check Palindrome Number // Same when reversed
+
+12. Check (Strong || Krishnamurthy) Number // same as sum of factorials of digits
+
+13. Check Buzz Number // ends with 7 or divisible by 7 // HW
+
+14. Check Armstrong Number // same as sum of cubes of digits
+
+15. Check Perfect Number // Same as sum of positive divisors // 24.04.2022
+
+16. 1 2 4 8 16 32.......... Print this series upto n terms
+
+17. calculate sum of: 1 + 1/3 + 1/9 + 1/27.........Nth terms
+
+18. calculate sum of: 1 - 1/3 + 1/9 - 1/27 + 1/81 - 1/243.........Nth terms
+
+19. LCM
+
+20. GCD
+
+21. Decimal 2 Binary
+
+// patterns
+
+22.     1
+        2 3
+        4 5 6
+        7 8 9 10
+        11 12 13 14 15
+        16 17 18 18 20 21
+
+23.     1
+        2 2
+        3 3 3
+        4 4 4 4
+        5 5 5 5 5
+
+
+24.     * * * * * *
+        * * * * *
+        * * * * 
+        * * * 
+        * *
+        *
+
+25.
+            1
+           2 2
+          3 3 3
+         4 4 4 4
+        5 5 5 5 5
+
+
+26. Determine sum of even and odd numbers between 1 - N 
+
+
+
+
+
+0 1 1 2 3 5 8 13 21 ....10th Fibonacci series

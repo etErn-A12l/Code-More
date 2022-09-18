@@ -1,0 +1,98 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+h1.st {
+  margin: 0;
+  line-height: 13vh;
+  color: #fff;
+}
+
+.topbar {
+  height: 16vh;
+  width: 100vw;
+  background: #3aff33;
+  margin: 0;
+  text-align: center;
+}
+
+.menu {
+  min-height: 85vh;
+  width: 17vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+h3.top {
+  color: #000;
+  background: #38CF1D;
+  margin: 0;
+  line-height: 7.5vh;
+}
+
+.menu a {
+  color: #000;
+  background: #fae48b;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 7.5vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menu a:hover {
+  background: #F2CA24;
+}
+
+.content {
+  top: 16vh;
+  position: absolute;
+  margin: 2vw 2vw 2vw 36vw;
+
+
+}
+
+.gimg {
+  height: 30vw;
+  width: 30vw;
+}
+
+.text {
+  text-align: justify;
+}
+
+.d {
+  margin: 2vw;
+}
+
+.but {
+  float: right;
+  height: 1.6em;
+  width: 6em;
+  display: inline-block;
+  font-size: 1.6em;
+  font-weight: bold;
+  line-height: 1.6em;
+  text-align: center;
+  background: #FF0000;
+  border-radius: 2em;
+  margin: 3px;
+}
+
+.but:nth-child(even) {
+  float: left;
+}
+
+.blnk {
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  color: #fff;
+}
+.gimg2{
+  height: 30vh;
+  width: 45vw;
+  margin: 2vw;
+}
