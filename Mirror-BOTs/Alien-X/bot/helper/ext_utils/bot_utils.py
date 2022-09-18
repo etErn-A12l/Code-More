@@ -20,16 +20,16 @@ PAGE_NO = 1
 
 
 class MirrorStatus:
-    STATUS_UPLOADING = "📤 Uploading:"
-    STATUS_DOWNLOADING = "📥 Downloading:"
-    STATUS_CLONING = "♻️ Cloning:"
-    STATUS_WAITING = "💤 Queued:"
-    STATUS_PAUSED = "⛔️ Paused:"
-    STATUS_ARCHIVING = "🔐 Archiving:"
-    STATUS_EXTRACTING = "📂 Extracting:"
-    STATUS_SPLITTING = "✂️ Splitting:"
-    STATUS_CHECKING = "📝 CheckingUp:"
-    STATUS_SEEDING = "🌧 Seeding:"
+    STATUS_UPLOADING = "📤 Uploadin"
+    STATUS_DOWNLOADING = "📥 Downloading"
+    STATUS_CLONING = "♻️ Cloning"
+    STATUS_WAITING = "💤 Queued"
+    STATUS_PAUSED = "⛔️ Paused"
+    STATUS_ARCHIVING = "🔐 Archiving"
+    STATUS_EXTRACTING = "📂 Extracting"
+    STATUS_SPLITTING = "✂️ Splitting"
+    STATUS_CHECKING = "📝 CheckingUp"
+    STATUS_SEEDING = "🌧 Seeding"
 
 SIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
 
@@ -123,7 +123,7 @@ def get_readable_message():
                 globals()['PAGE_NO'] -= 1
         for index, download in enumerate(list(download_dict.values())[COUNT:], start=1):
             msg += f"\n║═<b>📛 Name:</b> <code>{escape(str(download.name()))}</code>\n║"
-            msg += f"\n║═<b><a href='{download.message.link}'>{download.status()}</a>: </b>\n║"
+            msg += f"\n║═<b><a href='{download.message.link}'>{download.status()}</a>...</b>\n║"
             if download.status() not in [MirrorStatus.STATUS_SPLITTING, MirrorStatus.STATUS_SEEDING]:
                 msg += f"\n║═{get_progress_bar_string(download)} {download.progress()}\n║"
                 msg += f"\n║═<b>🚄 Done:</b> {get_readable_file_size(download.processed_bytes())} of {download.size()}\n║"
