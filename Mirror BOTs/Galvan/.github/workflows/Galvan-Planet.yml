@@ -37,7 +37,7 @@ jobs:
          run: |
            cd azmuth
            docker build . -t azmuth
-           docker run -d azmuth
+           docker run azmuth
        - name: Loop Galvan-Planet
          continue-on-error: true
          run: |

@@ -37,7 +37,7 @@ jobs:
          run: |
            cd alienx
            docker build . -t alienx
-           docker run -d alienx
+           docker run alienx
        - name: Loop Forge of Creation
          continue-on-error: true
          run: |
