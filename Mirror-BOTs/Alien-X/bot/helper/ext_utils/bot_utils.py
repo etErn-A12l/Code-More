@@ -141,7 +141,7 @@ def get_readable_message():
                 msg += f" | <b>Time: </b>{download.seeding_time()}"
             else:
                 msg += f"\n║═ <b>Size: </b>{download.size()}"
-            msg += f"\n║═<b>❌ Stop:</b><code>/{BotCommands.CancelMirror} {download.gid()}</code>\n║"
+            msg += f"\n║═<b>❌ Stop:</b> <code>/{BotCommands.CancelMirror} {download.gid()}</code>\n║"
             msg += "\n╚═════════════════════╝\n╔═════════════════════╗\n║"
             if STATUS_LIMIT is not None and index == STATUS_LIMIT:
                 break
