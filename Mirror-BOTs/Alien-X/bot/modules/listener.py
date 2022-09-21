@@ -216,7 +216,7 @@ class MirrorLeechListener:
         if not self.isPrivate and INCOMPLETE_TASK_NOTIFIER and DB_URI is not None:
             DbManger().rm_complete_task(self.message.link)
         msg = f"<b>Hey, {self.tag}, Alien X👽 is done !</b>\n\n"
-        msg = f"╔═════════════════════╗\n║"
+        msg += f"╔═════════════════════╗\n║"
         msg += f"\n║═<b>📛 Name: </b><code>{escape(name)}</code>\n║\n║═<b>🛒 Size: </b>{size}\n║"
         if self.isLeech:
             msg += f'\n║═<b>🗃 Total Files: </b>{folders}\n║'
