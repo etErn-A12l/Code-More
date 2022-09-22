@@ -197,6 +197,11 @@ def main():
     LOGGER.info("Bot Started!")
     signal(SIGINT, exit_clean_up)
 
+    msg1 = "<b>Alien X Started ! 👽</b>"
+    chat_id = "1564082459"
+    bot.sendMessage(chat_id, msg1, 'HTML', disable_web_page_preview=True)
+
+
 app.start()
 main()
 
