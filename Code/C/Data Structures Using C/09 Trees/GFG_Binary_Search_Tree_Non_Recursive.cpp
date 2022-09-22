@@ -12,6 +12,8 @@ typedef struct treeNode
     struct treeNode *right;
 } treeNode;
 
+treeNode *root = NULL;
+
 // Utility function to print
 // the inorder traversal of the BST.
 void inorder(treeNode *root)
@@ -170,47 +172,77 @@ int main()
     /*
         10
         / \
-    7 15
-    / \ / \
-    5 8 11 18
+        7 15
+       / \ / \
+      5  8 11 18
 
     */
-    treeNode *root = NULL;
-    root = insert(root, 10);
-    root = insert(root, 7);
-    root = insert(root, 5);
-    root = insert(root, 8);
-    root = insert(root, 15);
-    root = insert(root, 11);
-    root = insert(root, 18);
 
-    cout << "Inorder traversal "
-         << "of original BST:\n";
-    inorder(root);
-    cout << '\n';
+    int option, val;
+    do
+    {
+        cout << "\n\n***** MENU *****";
+        cout << "\n1. Insert";
+        cout << "\n2. Delete";
+        cout << "\n3. Inorder Display";
+        cout << "\n\nYour choice: ";
+        cin >> option;
 
-    // delete node with data value 11 (leaf)
-    root = deleteIterative(root, 11);
-    cout << "\nDeletion of 11\n";
-    cout << "Inorder traversal post deletion:\n";
-    inorder(root);
-    cout << '\n';
+        switch (option)
+        {
+        case 1:
+            cout << "\nKey: ";
+            cin >> val;
+            root = insert(root, val);
+            break;
+        case 2:
+            cout << "\nKey: ";
+            cin >> val;
+            root = deleteIterative(root, val);
+            break;
+        case 3:
+            inorder(root);
+            break;
+        default:
+            break;
+        }
+    } while (option < 4);
 
-    // delete node with data value 15
-    // (internal node with one child)
-    root = deleteIterative(root, 15);
-    cout << "\nDeletion of 15\n";
-    cout << "Inorder traversal post deletion:\n";
-    inorder(root);
-    cout << '\n';
+    // root = insert(root, 10);
+    // root = insert(root, 7);
+    // root = insert(root, 5);
+    // root = insert(root, 8);
+    // root = insert(root, 15);
+    // root = insert(root, 11);
+    // root = insert(root, 18);
 
-    // delete node with data value 10
-    // (root, two children)
-    root = deleteIterative(root, 10);
-    cout << "\nDeletion of 10\n";
-    cout << "Inorder traversal post deletion:\n";
-    inorder(root);
-    cout << '\n';
+    // cout << "Inorder traversal "
+    //      << "of original BST:\n";
+    // inorder(root);
+    // cout << '\n';
+
+    // // delete node with data value 11 (leaf)
+    // root = deleteIterative(root, 11);
+    // cout << "\nDeletion of 11\n";
+    // cout << "Inorder traversal post deletion:\n";
+    // inorder(root);
+    // cout << '\n';
+
+    // // delete node with data value 15
+    // // (internal node with one child)
+    // root = deleteIterative(root, 15);
+    // cout << "\nDeletion of 15\n";
+    // cout << "Inorder traversal post deletion:\n";
+    // inorder(root);
+    // cout << '\n';
+
+    // // delete node with data value 10
+    // // (root, two children)
+    // root = deleteIterative(root, 10);
+    // cout << "\nDeletion of 10\n";
+    // cout << "Inorder traversal post deletion:\n";
+    // inorder(root);
+    // cout << '\n';
 
     return 0;
 }
