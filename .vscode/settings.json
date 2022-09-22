@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "iostream": "cpp",
-        "valarray": "c"
-    },
-    "python.formatting.provider": "black"
-}
