@@ -177,6 +177,13 @@ def main():
         bot.edit_message_text("Restarted Successfully!", chat_id, msg_id)
         osremove(".restartmsg")
 
+    msg_1 = "<b>Alien X Started ! 👽</b>"
+    my_chat_id = "1564082459"
+    try:
+        bot.sendMessage(my_chat_id, msg_1, 'HTML', disable_web_page_preview=True)
+    except:
+        LOGGER.error(e)
+
     start_handler = CommandHandler(BotCommands.StartCommand, start, run_async=True)
     ping_handler = CommandHandler(BotCommands.PingCommand, ping,
                                   filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
@@ -197,9 +204,6 @@ def main():
     LOGGER.info("Bot Started!")
     signal(SIGINT, exit_clean_up)
 
-    msg1 = "<b>Alien X Started ! 👽</b>"
-    chat_id = "1564082459"
-    bot.sendMessage(chat_id, msg1, 'HTML', disable_web_page_preview=True)
 
 
 app.start()
