@@ -1,7 +1,7 @@
 // Write a program to create a binary search tree and perform all the operations discussed in the preceding sections.
 
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 struct node
 {
@@ -32,6 +32,7 @@ int main()
     int option, val;
     struct node *ptr;
     create_tree(tree);
+    system("cls");
     do
     {
         printf("\n ****** MENU ******* \n");
