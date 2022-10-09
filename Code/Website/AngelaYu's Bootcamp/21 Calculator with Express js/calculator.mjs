@@ -26,6 +26,19 @@ app.post("/", (req, res) => {
     res.send("The sum is: " + sum)
 })
 
+app.get("/bmi", (req, res) => {
+    res.sendFile(__dirname + "/bmicalculator.html")
+})
+
+app.post("/bmi", (req, res) => {
+    var height = Number(req.body.height)
+    var weight = Number(req.body.weight)
+
+    var bmi = weight / height ** 2
+
+    res.send("Your BMI is: " + bmi)
+})
+
 app.listen(6400, () => {
     console.log("Listening on Port 6400");
 })
