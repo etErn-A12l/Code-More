@@ -1,5 +1,6 @@
 {
   "name": "20-express-js",
+  "type": "module",
   "version": "1.0.0",
   "description": "First Express server",
   "main": "server.js",
