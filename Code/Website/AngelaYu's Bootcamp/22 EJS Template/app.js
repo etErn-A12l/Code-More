@@ -14,35 +14,30 @@ app.get('/', (req, res) => {
     switch (today) {
         case 0:
             day = "Sunday";
-            res.render('index', { fuckingDay: day });
             break;
         case 1:
             day = "Monday";
-            res.render('index', { fuckingDay: day });
             break;
         case 2:
             day = "Tuesday";
-            res.render('index', { fuckingDay: day });
             break;
         case 3:
             day = "Wednesday";
-            res.render('index', { fuckingDay: day });
             break;
         case 4:
             day = "Thursday";
-            res.render('index', { fuckingDay: day });
             break;
         case 5:
             day = "Friday";
-            res.render('index', { fuckingDay: day });
             break;
         case 6:
             day = "Saturday";
-            res.render('index', { fuckingDay: day });
             break;
         default:
             break;
     }
+
+    res.render('index', { fuckingDay: day });   // Passes the value od day variable to fuckingDay variable of index.ejs from view folder
 
 });
 
