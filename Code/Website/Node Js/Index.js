@@ -63,7 +63,7 @@ console.log(date.getHours)
 
 var name = prompt("What is your name ? ");
 
-var statement = "sreejan is bokachoda";
+var statement = "I am incredible";
 
 var length_of_statement = statement.length;
 
@@ -76,3 +76,4 @@ alert("Cutting your tweet in 140 words....");
 tweet = tweet.slice(0, 141);
 alert(tweet);
 
+ 
