@@ -1,7 +1,8 @@
 // C++ implementation to delete
 // a node in the BST
 
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
 // Structure of the node

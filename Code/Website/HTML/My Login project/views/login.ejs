@@ -1,0 +1,24 @@
+<%- include("partials/header") %> 
+
+    <div class="container">
+        <h3>Login to Continue</h3>
+        <form class="form-container" action="/" method="post">
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="mailId" required>
+                <label for="floatingInput">Email address</label>
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="passwd" required>
+                <label for="floatingPassword">Password</label>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">agree to all terms and conditions</label>
+            </div>
+            <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+        </form>
+    </div>
+
+    <%- include("partials/footer") %> 
+

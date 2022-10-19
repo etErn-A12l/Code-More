@@ -1,0 +1,23 @@
+footer {
+    position: abolute;
+    margin-bottom: 0;
+    margin-top: 100%;
+    text-align: center;
+}
+
+.container {
+    padding: 7% 2%;
+    /* margin-left: 2%;
+    margin-right: 2%; */
+    width: 25rem;
+    align-items: center;
+}
+
+.container h3 {
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.navbar {
+    padding: 1.5%;
+}

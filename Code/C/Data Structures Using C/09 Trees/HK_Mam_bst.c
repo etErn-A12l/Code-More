@@ -99,16 +99,19 @@ void insert_inside(struct bstNode *root)
 
 void inorder(struct bstNode *root)
 {
+    printf("\nInorder Traversal: \n");
     if (root != NULL)
     {
-        inorder(root->left);
-        printf("\t%d", root->data);
-        inorder(root->right);
+        inorder(root->left);                // 1
+        printf("\t%d", root->data);        // 2
+        inorder(root->right);               // 3
     }
 }
 
 void preorder(struct bstNode *root)
 {
+    printf("\nPreorder Traversal: \n");
+
     if (root != NULL)
     {
         printf("\t%d", root->data);
@@ -119,6 +122,7 @@ void preorder(struct bstNode *root)
 
 void postorder(struct bstNode *root)
 {
+    printf("\nPostorder Traversal: \n");
     if (root != NULL)
     {
         postorder(root->left);
