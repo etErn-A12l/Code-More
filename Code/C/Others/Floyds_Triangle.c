@@ -1,22 +1,19 @@
-
-// Without using a temporary variable and with only one loop
 #include <stdio.h>
-
-void floyd(n)
-{
-    int line = 1;
-    for (int i = 0; i < n; i++)
-    {
-        if(i == line)
-        {
-            printf("\n");
-            line++;
-        }
-        printf("%d ", i+1);
-    }
-}
 
 int main()
 {
-    floyd(6);
+  int rows, i, j, number = 1;
+  
+  printf("Enter number of rows: ");
+  scanf("%d", &rows);
+  for (i = 1; i <= rows; i++)
+  {
+    for (j = 1; j <= i; ++j)
+    {
+      printf("%d ", number);
+      number++;
+    }
+    printf("\n");
+  }
+  return 0;
 }
