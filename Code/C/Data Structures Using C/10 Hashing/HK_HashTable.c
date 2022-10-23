@@ -8,10 +8,10 @@ int hashtable[size] = {0};
 void insert()
 {
     int key, h_index, i, h_inn;
-    printf("\nEnter your key :");
+    printf("\nEnter your key: ");
     scanf("%d", &key);
     h_inn = key % size;
-    for (int i = 0; i < size; i++)
+    for (i = 0; i < size; i++)
     {
         h_index = (h_inn + i) % size;
         if (hashtable[h_index] == 0)
@@ -22,14 +22,14 @@ void insert()
     }
     if (i == size)
     {
-        printf("No size left");
+        printf("\nNO SPACE left");
     }
 }
 
 void search()
 {
     int key, h_index, i, h_inn;
-    printf("\nEnter your key :");
+    printf("\nEnter your key: ");
     scanf("%d", &key);
     h_inn = key % size;
     for (int i = 0; i < size; i++)
@@ -37,7 +37,7 @@ void search()
         h_index = (h_inn + i) % size;
         if (hashtable[h_index] == key)
         {
-            printf("Key found\n");
+            printf("Key Found at index %d\n",h_index);
             break;
         }
         if (i == size)
@@ -49,22 +49,23 @@ void search()
 
 void Display()
 {
-    printf("\nThe  HashTable is :");
+    printf("\nThe HashTable is :\n");
     for (int i = 0; i < size; i++)
     {
-        printf("Hash Index %d is %d ", i, hashtable[i]);
-        printf("\n");
+        printf("\nHash Index %d is %d", i, hashtable[i]);
     }
 }
 
 int main()
 {
     int op = 0;
+    system("cls");
     while (op < 4)
     {
-        printf("\n1. insert\n2. search\n3. Display\n");
-        printf("Enter your option : ");
+        printf("\n\n1. Insert\n2. Search\n3. Display\n");
+        printf("\nEnter your option : ");
         scanf("%d", &op);
+        system("cls");
         switch (op)
         {
         case 1:

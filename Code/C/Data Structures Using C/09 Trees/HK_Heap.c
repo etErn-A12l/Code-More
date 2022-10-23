@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX 10
+#define MAX 5
 
-int heap[MAX] = {12, 56, 23, 85, 35, 90, 52, 47, 72, 84};
+int heap[MAX];
 
 void insert(int heap[]);
 void heapify(int heap[], int size, int i);
@@ -18,16 +18,16 @@ int main(int argc, char const *argv[])
     do
     {
         printf("\n\n**** MENU ****");
-        // printf("\n1. Insert");
+        printf("\n1. Insert");
         printf("\n2. Display");
         printf("\n3. Heap Sort");
         printf("\n\nEnter your choice: ");
         scanf("%d", &option);
         system("cls");
 
-        // if (option == 1)
-        //     insert(heap);
-        if (option == 2)
+        if (option == 1)
+            insert(heap);
+        else if (option == 2)
             display(heap);
         else if (option == 3)
             heapSort(heap, MAX);
