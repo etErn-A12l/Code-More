@@ -92,7 +92,7 @@ void search(struct node *table[])
     }
 
     if (flag == 0)
-        printf("\nThe key was NOT FOUND in the Hash Table !");
+        printf("\nThe key was NOT FOUND !");
 }
 
 void delete (struct node *table[])
@@ -128,7 +128,7 @@ void delete (struct node *table[])
     if (flag == 1)
         printf("\n%d was deleted !", key);
     else
-        printf("\nThe key was NOT FOUND in the Hash Table !");
+        printf("\nThe key was NOT FOUND !");
 }
 
 void display(struct node *table[])
