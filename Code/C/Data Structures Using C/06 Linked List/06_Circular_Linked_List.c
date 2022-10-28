@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 struct node
 {
@@ -35,10 +35,13 @@ int main()
         printf("\n 6: Delete a node from the end");
         printf("\n 7: Delete a node after a given node");
         printf("\n 8: Delete the entire list");
-        printf("\n 9: EXIT");
+        printf("\n 9: Search a Node");
+        printf("\n 10: Delete a node");
+        printf("\n 11: EXIT");
 
         printf("\n\n Enter your option : ");
         scanf("%d", &option);
+        system("cls");
 
         switch (option)
         {
@@ -116,13 +119,21 @@ struct node *display(struct node *start)
 {
     struct node *ptr;
     ptr = start;
-    while (ptr->next != start)
+    if (start == NULL)
     {
-        printf("\t %d", ptr->data);
-        ptr = ptr->next;
+        printf("\nLinked List is EMPTY !");
+        return start;
     }
-    printf("\t %d", ptr->data);
-    return start;
+    else
+    {
+        while (ptr->next != start)
+        {
+            printf("\t %d", ptr->data);
+            ptr = ptr->next;
+        }
+        printf("\t %d", ptr->data);
+        return start;
+    }
 }
 
 struct node *insert_beg(struct node *start)
@@ -253,19 +264,38 @@ struct node *search(struct node *start)
 
 struct node *del(struct node *start)
 {
-    struct node *temp = start;
+    struct node *temp = start, *preptr;
+    if (start == NULL)
+    {
+        printf("\nLinked List is EMPTY !");
+        return start;
+    }
     int num;
     printf("\nEnter the data you want to find: ");
-    scanf("%d",&num);
+    scanf("%d", &num);
     do
     {
-        if(temp->data == num)
+        preptr = temp;
+        temp = temp->next;
+        if (temp->data == num)
         {
-            if(temp == start)
+            if (temp == start)
             {
-                
+                preptr->next = temp->next;
+                start = preptr->next;
+                printf("\n%d was deleted !", temp->data);
+                free(temp);
+                break;
+            }
+            else
+            {
+                preptr->next = temp->next;
+                printf("\n%d was deleted !", temp->data);
+                free(temp);
+                break;
             }
         }
-    } while (temp->next!=start);
-    
+        temp = temp->next;
+    } while (temp != start);
+    return start;
 }

@@ -21,7 +21,7 @@ int main()
     printf("\n The sorted array is: \n");
     for (i = 0; i < size; i++)
         printf(" %d\t", arr[i]);
-    
+
     return 0;
 }
 
@@ -32,7 +32,7 @@ void insertion_sort(int arr[], int n)
     {
         temp = arr[i];
         j = i - 1;
-        while ((temp < arr[j]) && (j >= 0))
+        while ((arr[j] > temp) && (j >= 0))
         {
             arr[j + 1] = arr[j];
             j--;
