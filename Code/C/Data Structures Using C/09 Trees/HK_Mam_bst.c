@@ -28,7 +28,7 @@ int main()
         printf("\n4. Postorder Display");
         printf("\n\nEnter your choice: ");
         scanf("%d", &option);
-		system("cls");
+        system("cls");
         switch (option)
         {
         case 1:
@@ -38,19 +38,28 @@ int main()
             if (root == NULL)
                 printf("\nTree is EMPTY !");
             else
+            {
+                printf("\nInorder Traversal: \n");
                 inorder(root);
+            }
             break;
         case 3:
             if (root == NULL)
                 printf("\nTree is EMPTY !");
             else
+            {
+                printf("\nPreorder Traversal: \n");
                 preorder(root);
+            }
             break;
         case 4:
             if (root == NULL)
                 printf("\nTree is EMPTY !");
             else
+            {
+                printf("\nPostorder Traversal: \n");
                 postorder(root);
+            }
             break;
         default:
             printf("\nWRONG Choice !");
@@ -99,19 +108,16 @@ void insert_inside(struct bstNode *root)
 
 void inorder(struct bstNode *root)
 {
-    printf("\nInorder Traversal: \n");
     if (root != NULL)
     {
-        inorder(root->left);                // 1
-        printf("\t%d", root->data);        // 2
-        inorder(root->right);               // 3
+        inorder(root->left);        // 1
+        printf("\t%d", root->data); // 2
+        inorder(root->right);       // 3
     }
 }
 
 void preorder(struct bstNode *root)
 {
-    printf("\nPreorder Traversal: \n");
-
     if (root != NULL)
     {
         printf("\t%d", root->data);
@@ -122,7 +128,6 @@ void preorder(struct bstNode *root)
 
 void postorder(struct bstNode *root)
 {
-    printf("\nPostorder Traversal: \n");
     if (root != NULL)
     {
         postorder(root->left);
