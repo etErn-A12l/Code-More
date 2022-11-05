@@ -1,8 +1,6 @@
 
 # Creating Empty Dictionary
 
-from filecmp import cmp
-
 
 dict1 = {}
 
@@ -37,7 +35,7 @@ print(dict2.get(5))         # Output: None
 
 
 thisdict = {
-    "Name": "Sreejan", "Subject": "Physics", "Roll": "12"}
+    "Name": "Sreejan", "Subject": "Physics", "Roll": "Sreejan"}
 
 print(thisdict["Roll"])     # Output: 10
 
