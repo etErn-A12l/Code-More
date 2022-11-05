@@ -128,8 +128,6 @@ struct node *insertElement(struct node *tree, int val)
     if (tree == NULL)
     {
         tree = ptr;
-        tree->left = NULL;
-        tree->right = NULL;
     }
     else
     {
@@ -213,11 +211,13 @@ struct node *deleteElement(struct node *tree, int val)
         parent = cur;
         cur = (val < cur->data) ? cur->left : cur->right;
     }
+
     if (cur == NULL)
     {
         printf("\n The value to be deleted is not present in the tree");
         return (tree);
     }
+
     if (cur->left == NULL)
         ptr = cur->right;
     else if (cur->right == NULL)
