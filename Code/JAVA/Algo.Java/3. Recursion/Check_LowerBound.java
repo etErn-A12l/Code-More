@@ -22,8 +22,7 @@ public class Check_LowerBound {
         if (arr[index] == num) {
             return index;
         } else {
-            int new1 = find_lower_bound(arr, index + 1, num);
-            return new1;
+            return find_lower_bound(arr, index + 1, num);
         }
     }    
 }
