@@ -1,9 +1,9 @@
-from firstmodule import *
+from firstmodule import Firstmodule
 
-import firstmodule
+Firstmodule.test()
+Firstmodule.rest()
 
-firstmodule.test()
-firstmodule.rest()
+from Secondmodule import *
 
 test()
 rest()
