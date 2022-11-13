@@ -10,19 +10,26 @@ public class Check_UpperBound {
         int num;
         System.out.print("Enter the number that you wanna find: ");
         num = ab.nextInt();
-        int result = -1;
-        find_upper_bound(arr, 0, num, result);
+        int index = find_upper_bound(arr, 0, num);
+        System.out.println("The Number was found at index: " + index);
     }
 
-    public static int find_upper_bound(int arr[], int index, int num, int result) {
+    public static int find_upper_bound(int arr[], int temp_index, int num) {
         
-        if (index == arr.length) {
-            return result;
+        if (temp_index == arr.length) {
+            return -1;
         }
-        if (arr[index] == num) {
-            result = index;
-        } else {
-            result = find_upper_bound(arr, index + 1, num, result);
+
+        int index = find_upper_bound(arr, temp_index + 1, num);
+        if(index == -1)
+        {
+            if(arr[temp_index] == num)
+                return temp_index;
+            else
+                return -1;
+        }
+        else {
+            return index;
         }
     }
 }
