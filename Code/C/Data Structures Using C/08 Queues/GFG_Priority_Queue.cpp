@@ -1,7 +1,7 @@
 // C++ program for the above approach
 
 #include <bits/stdc++.h>
-using namespace std;
+// using namespace std;
 
 // Structure for the elements in the
 // priority queue
@@ -94,21 +94,21 @@ int main()
     // at the moment
     int ind = peek();
 
-    cout << pr[ind].value << endl;
+    std::cout << pr[ind].value << std::endl;
 
     // Dequeue the top element
     dequeue();
 
     // Check the top element
     ind = peek();
-    cout << pr[ind].value << endl;
+    std::cout << pr[ind].value << std::endl;
 
     // Dequeue the top element
     dequeue();
 
     // Check the top element
     ind = peek();
-    cout << pr[ind].value << endl;
+    std::cout << pr[ind].value << std::endl;
 
     return 0;
 }

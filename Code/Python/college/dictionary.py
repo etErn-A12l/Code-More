@@ -69,10 +69,10 @@ thisdict1 = dict.fromkeys(x, y)
 
 print(thisdict1)
 
-keys = ['a','b','c','d','e']
-values = [1,2,3,4,5]
+keys = ['a', 'b', 'c', 'd', 'e']
+values = [1, 2, 3, 4, 5]
 
-myDict = { k:v for (k,v) in zip(keys, values)}
+myDict = {k: v for (k, v) in zip(keys, values)}
 myDict = dict(zip(keys, values))    # Same
 
 # **************************************** #
