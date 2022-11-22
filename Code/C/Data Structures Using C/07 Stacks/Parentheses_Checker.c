@@ -59,7 +59,7 @@ void push(char c)
 char pop()
 {
     if (top == -1)
-        printf("\n Stack Underflow");
+        printf("\nStack Underflow");
     else
         return (stk[top--]);
 }
