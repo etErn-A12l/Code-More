@@ -73,7 +73,7 @@ int main()
     int gen = 1;
 
     // Generation Iteration
-    for (gen = 1; gen <= 10; gen++)
+    for (gen = 1; gen <= MAX_GEN; gen++)
     {
         vector<struct chromosome> nextGen_population;
 
@@ -165,7 +165,7 @@ string mutatedGene(string &gnome)
 {
     while (true)
     {
-        int r = rand_num(1, CITY);
+        int r = rand_num(1, CITY);  // first and last index not allowed because they already have same value
         int r1 = rand_num(1, CITY);
         if (r1 != r)
         {
