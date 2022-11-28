@@ -1,4 +1,4 @@
-// TSP Problem SolCITYing by Genetic Algorithm With RW selection, Cyclic Cross OCITYer without any constraint
+// TSP Problem Solving by Genetic Algorithm With RW selection, Cyclic Cross Over without any constraint
 
 #include <bits/stdc++.h>
 #include <conio.h>
@@ -62,7 +62,7 @@ int main()
     cout << endl
          << "\nBest Fitness : " << population[best_index].fitness << "\tGnome : " << population[best_index].gnome;
 
-    cout << "\n\nPress ENTER to Continue:";
+    cout << "\n\nPress ENTER to Continue :";
     getch();
 
     /* ============= APPLYING ALGORITHM ============= */
@@ -73,7 +73,7 @@ int main()
     int gen = 1;
 
     // Generation Iteration
-    for (gen = 1; gen <= 50; gen++)
+    for (gen = 1; gen <= 10; gen++)
     {
         vector<struct chromosome> nextGen_population;
 
@@ -110,6 +110,7 @@ int main()
         for (i = 0; i < nextGen_population.size() - 1; i++)
             cyclic_crossover(&nextGen_population[i].gnome, &nextGen_population[i + 1].gnome);
 
+        /* ============= Applying Mutation to the genes ============= */
         for (i = 0; i < nextGen_population.size(); i++)
             nextGen_population[i].gnome = mutatedGene(nextGen_population[i].gnome);
 
@@ -195,7 +196,7 @@ string create_gnome()
     return gnome;
 }
 
-// Function to return the fitness CITYalue of a gnome.
+// Function to return the fitness value of a gnome.
 int cal_fitness(string gnome)
 {
     int f = 0, i = 0;
@@ -213,6 +214,7 @@ int cal_fitness(string gnome)
     return f;
 }
 
+ // returns the index of best fitness chromosome
 int best_fitIndex(vector<struct chromosome> population)
 {
     int best_fit = INT_MAX, i, j;
@@ -230,7 +232,8 @@ int best_fitIndex(vector<struct chromosome> population)
 // Perform Roulette Wheel Selection and return true if the chromosome is selected
 void rw_selection(vector<struct chromosome> &population, vector<struct chromosome> &new_population)
 {
-    float r = rand() / static_cast<float>(RAND_MAX); // Randomly generate a float value between 0 and 1
+    // Randomly generate a float value between 0 and 1
+    float r = rand() / static_cast<float>(RAND_MAX); 
     int i;
 
     // cout << endl
