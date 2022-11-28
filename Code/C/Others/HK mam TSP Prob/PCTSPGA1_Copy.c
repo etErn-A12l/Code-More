@@ -12,18 +12,9 @@
 #define pc 0.4
 #define pm 0.3
 
-/*float COST[node][node][3]={{{1000,1100,1200},{15,16,17},{30,32,35},{4,4.5,5}},
-{{6,7,8},{1000,1100,1200},{4,4.5,5},{1,1.24,1.5}},
-{{10,12,13},{15,17,18},{1000,1100,1200},{16,17,18}},
-{{7,8,9},{18,20,22},{13,14,15},{1000,1100,1200}}};*/
-/*float COST[node][node]={{1000,2,5,7,1},{6,1000,3,8,2},{8,7,1000,4,7},{12,4,6,1000,5},{1,3,2,8,1000}}; */
-/*float COST[node][node]={{1000,12,15,10,8},{8,1000,15,12,8},{9,11,1000,15,11},{7,12,19,1000,11},{9,12,16,10,1000}}; */
-
 float COST[node][node] = {{1000, 25, 28, 32, 20, 6, 35, 37, 40, 30}, {37, 1000, 20, 28, 35, 40, 30, 42, 28, 4}, {42, 28, 1000, 30, 25, 35, 9, 32, 40, 30}, {28, 30, 7, 1000, 20, 25, 30, 35, 22, 37}, {37, 22, 35, 30, 1000, 20, 25, 30, 9, 28}, {25, 30, 25, 8, 28, 1000, 32, 40, 32, 30}, {28, 25, 30, 22, 37, 40, 1000, 10, 32, 20}, {20, 5, 32, 40, 35, 25, 40, 1000, 22, 37}, {30, 40, 35, 25, 20, 22, 37, 32, 1000, 28}, {28, 30, 28, 20, 11, 32, 37, 40, 30, 1000}};
 float cumuprob[50], prob[50];
-
 int nparr[100], g; /* new population array*/
-
 double TOU[10][10], total;
 
 struct chrom
@@ -58,6 +49,7 @@ int main()
 	for (i = 0; i < node; i++)
 		for (j = 0; j < node; j++)
 			TOU[i][j] = 1 / COST[i][j];
+
 	for (i = 0; i < noc; i++)
 	{
 		t2 = 0;
@@ -65,8 +57,8 @@ int main()
 		t2++;
 		//	 printf("\nt2=%d,i=%d",t2,i);
 	v:
-		r = rand() % node;
-		// printf("r=%d",r);
+		r = (rand() % node);
+		// printf("\nr = %d", r);
 		flag = 1;
 		for (j1 = 0; j1 < t2; j1++)
 			if (r == path[j1])
@@ -85,8 +77,8 @@ int main()
 	k:
 		// printf("Path=%d ",i);
 		for (z = 0; z < t2; z++)
-			//	printf("%d\t",path[z]);
-			//	printf("\n");
+			// printf("%d\t",path[z]);
+			// printf("\n");
 			/* cheak that it is repeated path or not*/
 			for (z = 0; z < node; z++)
 				ch[i].pt[z] = path[z];
@@ -110,30 +102,29 @@ int main()
 			popu[pv].pt[z] = path[z];
 
 		pv++;
-
 	skip:
-		printf("Skipping..");
-	
+		printf("\nSkipped");
 	}
 
-	/* for(i=0;i<noc;i++)
-		{
-		   for(j=0;j<node;j++)
-		   printf("11 %d ",ch[i].pt[j]);
-		   printf("\n");
-		}
-		   */
+	// for (i = 0; i < noc; i++)
+	// {
+	// 	for (j = 0; j < node; j++)
+	// 		printf("11 %d ", ch[i].pt[j]);
+	// 	printf("\n");
+	// }
+
 	printf("\nsize of popu: %d", pv);
 	printf("\n");
 
-	//	for(i=0;i<pv;i++)  /* here pv is the  no of chromosome*/
+	// for (i = 0; i < pv; i++) /* here pv is the  no of chromosome*/
 	// {
-	//	for(j=0;j<node;j++)
-	//	printf(" %d ",popu[i].pt[j]);
-	//	printf("\n");
+	// 	for (j = 0; j < node; j++)
+	// 		printf(" %d ", popu[i].pt[j]);
+	// 	printf("\n");
 	// }
-	// fpopu[0]=10000;
-	/* APPLY GENETIC LGORITHM */
+	// fpopu[0] = 10000;
+
+	/* APPLY GENETIC ALGORITHM */
 	y2[0] = 10000;
 	for (g = 1; g <= maxgen; g++)
 	{
@@ -152,7 +143,7 @@ int main()
 			{
 				z1[j] = fpopu[0].pt[j];
 			}
-			// printf("\nff final fitness y2[%d]= %f\n",p,y2[0]);
+			// printf("\nfinal fitness y2[%d]= %f\n",p,y2[0]);
 		}
 		printf("\nGlobal Best=%f\n", y2[0]);
 		// getch();
@@ -188,7 +179,7 @@ void calfitness(int pv)
 		fpopu[i].fitness = 1000;
 		for (j = 0; j < node; j++)
 			printf("%d\t", popu[i].pt[j]);
-		printf("\nfittness  %d=%f\n", i, popu[i].fitness);
+		printf("\nfittness %d = %f\n", i, popu[i].fitness);
 	}
 	// getch();
 }
@@ -315,7 +306,7 @@ void crossover(int pv)
 	for (i = 0; i < pv; i++)
 	{
 		r = (rand() % 1000) / 1000.;
-		//	 printf("r=%f",r);
+			printf("r=%f",r);
 		if (r <= pc)
 		{
 			pos[count] = i;
@@ -399,43 +390,39 @@ void cross(int p0, int p1, int pv)
 	for (j = 0; j < node; j++)
 	{
 		if (pos == pr1[j])
-		{
 			l = j;
-		}
 	}
 	for (j = l; j > 0; j--)
-	{
 		pr1[j] = pr1[j - 1];
-	}
+
 	pr1[0] = pos;
 
 	printf("\nThe first parents\n");
 	for (j = 0; j < node; j++)
-	{
 		printf("%d  ", pr1[j]);
-	}
+
+
 	for (j = 0; j < node; j++)
 	{
 		if (pos == pr2[j])
-		{
 			l = j;
-		}
 	}
+
 	for (j = l; j > 0; j--)
-	{
 		pr2[j] = pr2[j - 1];
-	}
+
 	pr2[0] = pos;
 
 	printf("\nThe second parents\n");
+
 	for (j = 0; j < node; j++)
-	{
 		printf("%d  ", pr2[j]);
-	}
+
 	ch1[0] = pos;
 	i = 1;
 	j = 1;
 	m = 1;
+
 	while ((i < node) && (j < node))
 	{
 		if ((COST[ch1[m - 1]][pr1[i]]) == (COST[ch1[m - 1]][pr2[j]]))
@@ -785,6 +772,7 @@ void mutate(int p, int pv)
 		}
 	}
 }
+
 float check(int pv)
 {
 	int i, j, k;

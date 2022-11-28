@@ -66,7 +66,7 @@ int main()
 		//	 printf("\nt2=%d,i=%d",t2,i);
 	v:
 		r = rand() % node;
-		// printf("r=%d",r);
+		printf("r = %d",r);
 		flag = 1;
 		for (j1 = 0; j1 < t2; j1++)
 			if (r == path[j1])
