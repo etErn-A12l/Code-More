@@ -8,8 +8,8 @@ using namespace std;
 #define CITY 10     // number of cities
 #define POP_SIZE 85 // no of chromosome or population size
 #define MAX_GEN 500 // maximum generation
-#define pc 0.4
-#define pm 0.3
+// #define pc 0.4
+// #define pm 0.3
 
 int COST[CITY][CITY] = {{1000, 25, 28, 32, 20, 6, 35, 37, 40, 30}, {37, 1000, 20, 28, 35, 40, 30, 42, 28, 4}, {42, 28, 1000, 30, 25, 35, 9, 32, 40, 30}, {28, 30, 7, 1000, 20, 25, 30, 35, 22, 37}, {37, 22, 35, 30, 1000, 20, 25, 30, 9, 28}, {25, 30, 25, 8, 28, 1000, 32, 40, 32, 30}, {28, 25, 30, 22, 37, 40, 1000, 10, 32, 20}, {20, 5, 32, 40, 35, 25, 40, 1000, 22, 37}, {30, 40, 35, 25, 20, 22, 37, 32, 1000, 28}, {28, 30, 28, 20, 11, 32, 37, 40, 30, 1000}};
 
@@ -20,13 +20,14 @@ struct chromosome
     float prob, qumulative_prob;
 };
 
-int rand_num(int start, int end);          // Function to return a random number
-bool repeat(string gnome, char);           // Function to check if the character has already occurred in the array
-string mutatedGene();                      // Function to return a mutated GNOME
-string create_gnome();                     // Function to create a valid GNOME string to create the population
-int cal_fitness(string gnome);             // Function to return the fitness value of a gnome.
-bool rw_selection(chromosome);             // Perform Roulette Wheel Selection and return true if the chromosome is selected
-void cyclic_crossover(string *, string *); // Takes two string and performs cyclic crossover to it and changes them to child of them
+int rand_num(int start, int end);                                                                    // Function to return a random number
+bool repeat(string gnome, char);                                                                     // Function to check if the character has already occurred in the array
+string mutatedGene(string &gnome);                                                                   // Function to return a mutated GNOME
+string create_gnome();                                                                               // Function to create a valid GNOME string to create the population
+int cal_fitness(string gnome);                                                                       // Function to return the fitness value of a gnome.
+int best_fitIndex(vector<struct chromosome> population);                                             // returns the index of best fitness chromosome
+void rw_selection(vector<struct chromosome> &population, vector<struct chromosome> &new_population); // Perform Roulette Wheel Selection and return true if the chromosome is selected
+void cyclic_crossover(string *, string *);                                                           // Takes two string and performs cyclic crossover to it and changes them to child of them
 
 int main()
 {
@@ -42,6 +43,7 @@ int main()
     {
         temp.gnome = create_gnome();
         temp.fitness = cal_fitness(temp.gnome);
+
         population.push_back(temp);
     }
 
@@ -49,65 +51,91 @@ int main()
          << endl
          << "GNOME\t\tFITNESS VALUE\n"
          << endl;
-    for (i = 0; i < POP_SIZE; i++)
+
+    for (i = 0; i < population.size(); i++)
+    {
         cout << population[i].gnome << "\t"
              << population[i].fitness << endl;
-    cout << "\n";
+    }
 
-    cout << "Press ENTER to Continue:";
+    int best_index = best_fitIndex(population);
+    cout << endl
+         << "\nBest Fitness : " << population[best_index].fitness << "\tGnome : " << population[best_index].gnome;
+
+    cout << "\n\nPress ENTER to Continue:";
     getch();
 
     /* ============= APPLYING ALGORITHM ============= */
 
-    vector<struct chromosome> new_population = population, nextGen_population;
+    vector<struct chromosome> new_population = population;
 
     // Generation Number
     int gen = 1;
 
-    // Calculating total fitness
-    int total_fitness = 0;
-    for (i = 0; i < new_population.size(); i++)
-        total_fitness += new_population[i].fitness;
-
-    // Calculating probability for each chromosome
-    for (i = 0; i < new_population.size(); i++)
-        new_population[i].prob = (float)new_population[i].fitness / (float)total_fitness;
-
-    // Calculating qumulative probability for each chromosome
-    float q_prob = 0;
-    for (i = 0; i < new_population.size(); i++)
+    // Generation Iteration
+    for (gen = 1; gen <= 50; gen++)
     {
-        q_prob += new_population[i].prob;
-        new_population[i].qumulative_prob = q_prob;
-    }
+        vector<struct chromosome> nextGen_population;
 
-    // RW Selection
-    for (i = 0; i < new_population.size(); i++)
-    {
-        bool test = rw_selection(new_population[i]);
-        if (test)
+        // Recalculating the fitness
+        for (i = 0; i < new_population.size(); i++)
+            population[i].fitness = cal_fitness(population[i].gnome);
+
+        // Calculating total fitness
+        int total_fitness = 0;
+        for (i = 0; i < new_population.size(); i++)
+            total_fitness += new_population[i].fitness;
+
+        // Calculating probability for each chromosome
+        for (i = 0; i < new_population.size(); i++)
+            new_population[i].prob = (float)new_population[i].fitness / (float)total_fitness;
+
+        // Calculating qumulative probability for each chromosome
+        float q_prob = 0;
+        for (i = 0; i < new_population.size(); i++)
         {
-            cout << endl
-                 << test;
-
-            // What to do
+            q_prob += new_population[i].prob;
+            new_population[i].qumulative_prob = q_prob;
         }
-        else
-        {
-            cout << endl
-                 << test;
 
-            // What to do
-        }
+        /* ============= Roulette Wheel Selection ============= */
+
+        // Selected Parents will be pushed to nextGen_population
+        for (i = 0; i < new_population.size(); i++)
+            rw_selection(new_population, nextGen_population);
+
+        /* ============= Applying Cyclic Crossover ============= */
+
+        // Best Selected Parents are in nextGen_population
+        for (i = 0; i < nextGen_population.size() - 1; i++)
+            cyclic_crossover(&nextGen_population[i].gnome, &nextGen_population[i + 1].gnome);
+
+        for (i = 0; i < nextGen_population.size(); i++)
+            nextGen_population[i].gnome = mutatedGene(nextGen_population[i].gnome);
+
+        system("cls");
+
+        cout << endl
+             << "Generation: " << gen << endl;
+
+        cout << endl
+             << "GNOME\t\tFITNESS VALUE\n"
+             << endl;
+        for (i = 0; i < POP_SIZE; i++)
+            cout << nextGen_population[i].gnome << "\t"
+                 << nextGen_population[i].fitness << endl;
+        cout << "\n";
+
+        int best_index = best_fitIndex(nextGen_population);
+        cout << endl
+             << "Best Fitness : " << nextGen_population[best_index].fitness << "\tGnome : " << nextGen_population[best_index].gnome;
+
+        // cout << endl
+        //      << "\nPress ENTER to Continue:";
+        // getch();
+
+        new_population = nextGen_population;
     }
-
-    cyclic_crossover(&population[5].gnome, &population[8].gnome);
-
-    // cout << endl
-    //      << population[0].gnome;
-    // cyclic_crossover(&population[0].gnome, &population[1].gnome);
-    // cout << endl
-    //      << population[0].gnome;
 
     return 0;
 }
@@ -132,7 +160,7 @@ bool repeat(string s, char ch)
 }
 
 // Function to return a mutated GNOME
-string mutatedGene(string gnome)
+string mutatedGene(string &gnome)
 {
     while (true)
     {
@@ -185,19 +213,47 @@ int cal_fitness(string gnome)
     return f;
 }
 
-// Perform Roulette Wheel Selection and return true if the chromosome is selected
-bool rw_selection(chromosome q)
+int best_fitIndex(vector<struct chromosome> population)
 {
-    float r = rand() % 2; // Randomly generate 0 or 1
-    /*
-    cout << endl
-    << "r = "
-    << r;
-    */
-    if (r < q.qumulative_prob)
-        return true;
-    else
-        return false;
+    int best_fit = INT_MAX, i, j;
+    for (i = 0; i < population.size(); i++)
+    {
+        if (population[i].fitness < best_fit)
+        {
+            best_fit = population[i].fitness;
+            j = i;
+        }
+    }
+    return j;
+}
+
+// Perform Roulette Wheel Selection and return true if the chromosome is selected
+void rw_selection(vector<struct chromosome> &population, vector<struct chromosome> &new_population)
+{
+    float r = rand() / static_cast<float>(RAND_MAX); // Randomly generate a float value between 0 and 1
+    int i;
+
+    // cout << endl
+    //      << "r = "
+    //      << r;
+
+    for (i = 0; i < population.size() - 1; i++)
+    {
+        if (r < population[0].qumulative_prob)
+        {
+            new_population.push_back(population[0]);
+            // cout << endl
+            //      << "Pushed " << population[0].qumulative_prob;
+            break;
+        }
+        else if (r > population[i].qumulative_prob && r <= population[i + 1].qumulative_prob)
+        {
+            new_population.push_back(population[i + 1]);
+            // cout << endl
+            //      << "Pushed " << population[i].qumulative_prob << " 2nd Condition";
+            break;
+        }
+    }
 }
 
 // Takes two string and performs cyclic crossover to it and changes them to child of them
@@ -247,6 +303,6 @@ void cyclic_crossover(string *s1, string *s2)
     cout << endl
          << "Child2 = " << child2;
     */
-   *s1 = child1;
-   *s2 = child2;
+    *s1 = child1;
+    *s2 = child2;
 }
