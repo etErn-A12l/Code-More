@@ -11,7 +11,16 @@ using namespace std;
 // #define pc 0.4
 // #define pm 0.3
 
-int COST[CITY][CITY] = {{1000, 25, 28, 32, 20, 6, 35, 37, 40, 30}, {37, 1000, 20, 28, 35, 40, 30, 42, 28, 4}, {42, 28, 1000, 30, 25, 35, 9, 32, 40, 30}, {28, 30, 7, 1000, 20, 25, 30, 35, 22, 37}, {37, 22, 35, 30, 1000, 20, 25, 30, 9, 28}, {25, 30, 25, 8, 28, 1000, 32, 40, 32, 30}, {28, 25, 30, 22, 37, 40, 1000, 10, 32, 20}, {20, 5, 32, 40, 35, 25, 40, 1000, 22, 37}, {30, 40, 35, 25, 20, 22, 37, 32, 1000, 28}, {28, 30, 28, 20, 11, 32, 37, 40, 30, 1000}};
+int COST[CITY][CITY] = {{1000, 25, 28, 32, 20, 6, 35, 37, 40, 30},
+                        {37, 1000, 20, 28, 35, 40, 30, 42, 28, 4},
+                        {42, 28, 1000, 30, 25, 35, 9, 32, 40, 30},
+                        {28, 30, 7, 1000, 20, 25, 30, 35, 22, 37},
+                        {37, 22, 35, 30, 1000, 20, 25, 30, 9, 28},
+                        {25, 30, 25, 8, 28, 1000, 32, 40, 32, 30},
+                        {28, 25, 30, 22, 37, 40, 1000, 10, 32, 20},
+                        {20, 5, 32, 40, 35, 25, 40, 1000, 22, 37},
+                        {30, 40, 35, 25, 20, 22, 37, 32, 1000, 28},
+                        {28, 30, 28, 20, 11, 32, 37, 40, 30, 1000}};
 
 struct chromosome
 {
@@ -20,14 +29,15 @@ struct chromosome
     float prob, qumulative_prob;
 };
 
-int rand_num(int start, int end);                                                                    // Function to return a random number
-bool repeat(string gnome, char);                                                                     // Function to check if the character has already occurred in the array
-string mutatedGene(string &gnome);                                                                   // Function to return a mutated GNOME
-string create_gnome();                                                                               // Function to create a valid GNOME string to create the population
-int cal_fitness(string gnome);                                                                       // Function to return the fitness value of a gnome.
-int best_fitIndex(vector<struct chromosome> population);                                             // returns the index of best fitness chromosome
-void rw_selection(vector<struct chromosome> &population, vector<struct chromosome> &new_population); // Perform Roulette Wheel Selection and return true if the chromosome is selected
-void cyclic_crossover(string *, string *);                                                           // Takes two string and performs cyclic crossover to it and changes them to child of them
+int rand_num(int start, int end);                                            // Function to return a random number
+bool repeat(string gnome, char);                                             // Function to check if the character has already occurred in the array
+string mutatedGene(string &gnome);                                           // Function to return a mutated GNOME
+string create_gnome();                                                       // Function to create a valid GNOME string to create the population
+int cal_fitness(string gnome);                                               // Function to return the fitness value of a gnome.
+int best_fitIndex(vector<struct chromosome> population);                     // returns the index of best fitness chromosome
+void rw_selection(vector<struct chromosome> &, vector<struct chromosome> &); // Perform Roulette Wheel Selection and return true if the chromosome is selected
+void cyclic_crossover(string *, string *);                                   // Takes two string and performs cyclic crossover to it and changes them to child of them
+void display_population(chromosome);                                         // Prints the chromosomes
 
 int main()
 {
@@ -47,20 +57,21 @@ int main()
         population.push_back(temp);
     }
 
-    cout << "\nInitial population:\n"
+    /* ============= Displaying Initial Population ============= */
+
+    cout << "\n\t\t------** Initial population **------\n"
          << endl
-         << "GNOME\t\tFITNESS VALUE\n"
+         << "GNOME\t\t\t\t\t\t\t\tFITNESS VALUE\n"
          << endl;
 
     for (i = 0; i < population.size(); i++)
-    {
-        cout << population[i].gnome << "\t"
-             << population[i].fitness << endl;
-    }
+        display_population(population[i]);
 
     int best_index = best_fitIndex(population);
     cout << endl
-         << "\nBest Fitness : " << population[best_index].fitness << "\tGnome : " << population[best_index].gnome;
+         << "\nBest Fitted Chromosome : \n"
+         << endl;
+    display_population(population[best_index]);
 
     cout << "\n\nPress ENTER to Continue :";
     getch();
@@ -69,8 +80,7 @@ int main()
 
     vector<struct chromosome> new_population = population;
 
-    // Generation Number
-    int gen = 1;
+    int gen;
 
     // Generation Iteration
     for (gen = 1; gen <= MAX_GEN; gen++)
@@ -99,13 +109,11 @@ int main()
         }
 
         /* ============= Roulette Wheel Selection ============= */
-
         // Selected Parents will be pushed to nextGen_population
         for (i = 0; i < new_population.size(); i++)
             rw_selection(new_population, nextGen_population);
 
         /* ============= Applying Cyclic Crossover ============= */
-
         // Best Selected Parents are in nextGen_population
         for (i = 0; i < nextGen_population.size() - 1; i++)
             cyclic_crossover(&nextGen_population[i].gnome, &nextGen_population[i + 1].gnome);
@@ -114,29 +122,30 @@ int main()
         for (i = 0; i < nextGen_population.size(); i++)
             nextGen_population[i].gnome = mutatedGene(nextGen_population[i].gnome);
 
+        /* ============= Displaying new generation Chromosomes ============= */
         system("cls");
-
         cout << endl
-             << "Generation: " << gen << endl;
-
-        cout << endl
-             << "GNOME\t\tFITNESS VALUE\n"
+             << "\t\t------** Generation " << gen << " **------"
              << endl;
-        for (i = 0; i < POP_SIZE; i++)
-            cout << nextGen_population[i].gnome << "\t"
-                 << nextGen_population[i].fitness << endl;
-        cout << "\n";
+
+        cout << endl
+             << "GNOME\t\t\t\t\t\t\t\tFITNESS VALUE\n"
+             << endl;
+
+        for (i = 0; i < nextGen_population.size(); i++)
+            display_population(nextGen_population[i]);
 
         int best_index = best_fitIndex(nextGen_population);
         cout << endl
-             << "Best Fitness : " << nextGen_population[best_index].fitness << "\tGnome : " << nextGen_population[best_index].gnome;
-
-        // cout << endl
-        //      << "\nPress ENTER to Continue:";
-        // getch();
+             << "\nBest Fitted Chromosome : \n"
+             << endl;
+        display_population(nextGen_population[best_index]);
 
         new_population = nextGen_population;
     }
+    cout << endl
+         << "Press ENTER to Exit :";
+    getch();
 
     return 0;
 }
@@ -165,7 +174,7 @@ string mutatedGene(string &gnome)
 {
     while (true)
     {
-        int r = rand_num(1, CITY);  // first and last index not allowed because they already have same value
+        int r = rand_num(1, CITY); // first and last index not allowed because they already have same value
         int r1 = rand_num(1, CITY);
         if (r1 != r)
         {
@@ -214,7 +223,7 @@ int cal_fitness(string gnome)
     return f;
 }
 
- // returns the index of best fitness chromosome
+// returns the index of best fitness chromosome
 int best_fitIndex(vector<struct chromosome> population)
 {
     int best_fit = INT_MAX, i, j;
@@ -233,27 +242,19 @@ int best_fitIndex(vector<struct chromosome> population)
 void rw_selection(vector<struct chromosome> &population, vector<struct chromosome> &new_population)
 {
     // Randomly generate a float value between 0 and 1
-    float r = rand() / static_cast<float>(RAND_MAX); 
+    float r = rand() / static_cast<float>(RAND_MAX);
     int i;
-
-    // cout << endl
-    //      << "r = "
-    //      << r;
 
     for (i = 0; i < population.size() - 1; i++)
     {
         if (r < population[0].qumulative_prob)
         {
             new_population.push_back(population[0]);
-            // cout << endl
-            //      << "Pushed " << population[0].qumulative_prob;
             break;
         }
         else if (r > population[i].qumulative_prob && r <= population[i + 1].qumulative_prob)
         {
             new_population.push_back(population[i + 1]);
-            // cout << endl
-            //      << "Pushed " << population[i].qumulative_prob << " 2nd Condition";
             break;
         }
     }
@@ -282,12 +283,7 @@ void cyclic_crossover(string *s1, string *s2)
             }
         }
     }
-    /*
-    cout << endl
-         << "Child1 = " << child1;
-    cout << endl
-         << "Child2 = " << child2;
-    */
+
     for (i = 1; i < parent1.size(); i++)
     {
         if ('-' == child1[i])
@@ -295,17 +291,21 @@ void cyclic_crossover(string *s1, string *s2)
         if ('-' == child2[i])
             child2[i] = parent1[i];
     }
-    /*
-    cout << endl
-         << "Parent1 = " << parent1;
-    cout << endl
-         << "Parent2 = " << parent2;
 
-    cout << endl
-         << "Child1 = " << child1;
-    cout << endl
-         << "Child2 = " << child2;
-    */
     *s1 = child1;
     *s2 = child2;
+}
+
+// Prints the chromosomes
+void display_population(chromosome p)
+{
+    int j;
+    for (j = 0; j < p.gnome.size(); j++)
+    {
+        if (j != p.gnome.size() - 1)
+            cout << p.gnome[j] << " -> ";
+        else
+            cout << p.gnome[j];
+    }
+    cout << "\t\t" << p.fitness << endl;
 }
