@@ -89,7 +89,7 @@ int main()
 
         // Recalculating the fitness
         for (i = 0; i < new_population.size(); i++)
-            population[i].fitness = cal_fitness(population[i].gnome);
+            new_population[i].fitness = cal_fitness(new_population[i].gnome);
 
         // Calculating total fitness
         int total_fitness = 0;
