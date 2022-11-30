@@ -73,6 +73,9 @@ int main()
          << endl;
     display_population(population[best_index]);
 
+    // string test = "53267194805";
+    // cout << endl << cal_fitness(test);
+
     cout << "\n\nPress ENTER to Continue :";
     getch();
 
@@ -86,7 +89,7 @@ int main()
     int gen;
 
     // Generation Iteration
-    for (gen = 1; gen <= 10; gen++)
+    for (gen = 1; gen <= MAX_GEN; gen++)
     {
         vector<struct chromosome> nextGen_population;
 
