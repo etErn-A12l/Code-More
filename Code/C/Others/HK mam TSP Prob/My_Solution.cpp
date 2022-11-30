@@ -61,7 +61,7 @@ int main()
 
     cout << "\n\t\t------** Initial population **------\n"
          << endl
-         << "GNOME\t\t\t\t\t\t\t\tFITNESS VALUE\n"
+         << "PATH\t\t\t\t\t\t\t\tFITNESS VALUE\n"
          << endl;
 
     for (i = 0; i < population.size(); i++)
@@ -69,12 +69,15 @@ int main()
 
     int best_index = best_fitIndex(population);
     cout << endl
-         << "\nBest Fitted Chromosome : \n"
+         << "\nBest Fitted Path In This Population:\n"
          << endl;
     display_population(population[best_index]);
 
     cout << "\n\nPress ENTER to Continue :";
     getch();
+
+    int best_fitness = INT_MAX, best_gen;
+    struct chromosome best_chromosome;
 
     /* ============= APPLYING ALGORITHM ============= */
 
@@ -83,13 +86,21 @@ int main()
     int gen;
 
     // Generation Iteration
-    for (gen = 1; gen <= MAX_GEN; gen++)
+    for (gen = 1; gen <= 10; gen++)
     {
         vector<struct chromosome> nextGen_population;
 
         // Recalculating the fitness
         for (i = 0; i < new_population.size(); i++)
+        {
             new_population[i].fitness = cal_fitness(new_population[i].gnome);
+            if (new_population[i].fitness < best_fitness)
+            {
+                best_fitness = new_population[i].fitness;
+                best_gen = gen;
+                best_chromosome = new_population[i];
+            }
+        }
 
         // Calculating total fitness
         int total_fitness = 0;
@@ -129,7 +140,7 @@ int main()
              << endl;
 
         cout << endl
-             << "GNOME\t\t\t\t\t\t\t\tFITNESS VALUE\n"
+             << "PATH\t\t\t\t\t\t\t\tFITNESS VALUE\n"
              << endl;
 
         for (i = 0; i < nextGen_population.size(); i++)
@@ -137,15 +148,18 @@ int main()
 
         int best_index = best_fitIndex(nextGen_population);
         cout << endl
-             << "\nBest Fitted Chromosome : \n"
+             << "\nBest Fitted Path In This Population: \n"
              << endl;
         display_population(nextGen_population[best_index]);
 
         new_population = nextGen_population;
     }
+
     cout << endl
-         << "Press ENTER to Exit :";
-    getch();
+         << "\nBest Fitness Was Found at Generation : " << best_gen << endl
+         << endl;
+    display_population(best_chromosome);
+    cout << endl;
 
     return 0;
 }
