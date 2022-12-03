@@ -129,7 +129,7 @@ int main()
 
         /* ============= Applying Cyclic Crossover ============= */
         // Best Selected Parents are in nextGen_population
-        for (i = 0; i < nextGen_population.size() - 1; i++)
+        for (i = 0; i < nextGen_population.size() - 1; i += 2)
             cyclic_crossover(&nextGen_population[i].gnome, &nextGen_population[i + 1].gnome);
 
         /* ============= Applying Mutation to the genes ============= */
