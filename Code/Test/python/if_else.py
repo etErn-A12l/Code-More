@@ -1,13 +1,7 @@
-with open('stats.txt', 'r') as file:
-    # read a list of lines into data
-    data = file.readlines()
+import os
+list = os.environ["PATH"]
 
-print(data)
-print("Your name: " + data[0])
+list1 = list.split(";")
 
-# now change the 2nd line, note that you have to add a newline
-data[1] = '0000\n'
-
-# and write everything back
-with open('stats.txt', 'w') as file:
-    file.writelines( data )
+for items in list1:
+    print(items)
