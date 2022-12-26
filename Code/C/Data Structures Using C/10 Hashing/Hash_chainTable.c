@@ -23,11 +23,11 @@ int main(int argc, char const *argv[])
     system("cls");
     do
     {
-        printf("\n\n**** MENU ****");
-        printf("\n1. Insert");
-        printf("\n2. Search");
-        printf("\n3. Delete");
-        printf("\n4. Display");
+        printf("\n\nOPTIONS:\n");
+        printf("\n\t(1) Insert");
+        printf("\n\t(2) Search");
+        printf("\n\t(3) Delete");
+        printf("\n\t(4) Display");
         printf("\n\nEnter you choice: ");
         scanf("%d", &option);
         system("cls");
