@@ -1,13 +1,15 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 // Create a Car class with some attributes
-class Car {
-  public:
-    string brand;   
-    string model;
-    int year;
+class Car
+{
+public:
+  string brand;
+  string model;
+  int year;
 };
-int main() {
+int main()
+{
   // Create an object of Car
   Car carObj1;
   carObj1.brand = "BMW";
