@@ -6,8 +6,8 @@
 int queue[MAX];
 int front = -1, rear = -1;
 
-void insert(void);
-int delete_element(void);
+void enque(void);
+int deque(void);
 int peek(void);
 void display(void);
 
@@ -29,10 +29,10 @@ int main()
         switch (option)
         {
         case 1:
-            insert();
+            enque();
             break;
         case 2:
-            val = delete_element();
+            val = deque();
             if (val != -1)
                 printf("\n The number deleted is : %d", val);
             break;
@@ -54,10 +54,10 @@ int main()
     return 0;
 }
 
-void insert()
+void enque()
 {
     int num;
-    printf("\n Enter the number to be inserted in the queue : ");
+    printf("\n Enter the number to be enqued in the queue : ");
     scanf("%d", &num);
     if (front == 0 && rear == MAX - 1)
         printf("\n OVERFLOW");
@@ -78,7 +78,7 @@ void insert()
     }
 }
 
-int delete_element()
+int deque()
 {
     int val;
     if (front == -1 && rear == -1)
