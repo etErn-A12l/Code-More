@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
 
 void bubbleSort(int arr[])
 {
-    for (int i = 0; i < SIZE - 1; i++)
+    for (unsigned short int i = 0; i < SIZE - 1; i++)
     {
         for (int j = 0; j < SIZE - 1 - i; j++)
         {
