@@ -19,15 +19,15 @@ int main(int argc, char const *argv[])
 
 void selectionSort(int arr[])
 {
-    for(int i = 0;i< MAX -1 ;i++)
+    for (int i = 0; i < MAX - 1; i++)
     {
         int min = i;
-        for(int j = i+1; j< MAX ;j++)
+        for (int j = i + 1; j < MAX; j++)
         {
             if (arr[min] > arr[j])
                 min = j;
         }
-        if( min != i)
+        if (min != i)
         {
             int temp = arr[i];
             arr[i] = arr[min];
