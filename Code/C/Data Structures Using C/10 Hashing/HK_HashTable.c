@@ -21,9 +21,8 @@ void insert()
         }
     }
     if (i == size)
-    {
         printf("\nNO SPACE left");
-    }
+
 }
 
 void search()
@@ -32,19 +31,17 @@ void search()
     printf("\nEnter your key: ");
     scanf("%d", &key);
     h_inn = key % size;
-    for (int i = 0; i < size; i++)
+    for (i = 0; i < size; i++)
     {
         h_index = (h_inn + i) % size;
         if (hashtable[h_index] == key)
         {
-            printf("Key Found at index %d\n",h_index);
+            printf("Key Found at index %d\n", h_index);
             break;
         }
-        if (i == size)
-        {
-            printf("Key Not Found \n");
-        }
     }
+    if (i == size)
+        printf("Key Not Found \n");
 }
 
 void Display()
