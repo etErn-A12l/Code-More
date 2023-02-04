@@ -1,3 +1,6 @@
+/*
+
+
 #include <iostream>
 #include <stdlib.h>
 using namespace std;
@@ -210,3 +213,166 @@ void calculate_64bit_exponent(int result[], int exponent, float number)
         cout << result[i];
     }
 }
+
+*/
+
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+const int MAX_BINARY = 30;
+const int MAX_32BIT_RESULT = 32;
+const int MAX_64BIT_RESULT = 64;
+
+int fraction_binary(int bin[], float num, int &exponent);
+void calculate_32bit_mantissa(int result[], int binary[], int length, int exponent);
+void calculate_64bit_mantissa(int result[], int binary[], int length, int exponent);
+void calculate_32bit_exponent(int result[], int exponent, float number);
+void calculate_64bit_exponent(int result[], int exponent, float number);
+
+int main()
+{
+    char decision;
+    cout << "\n-----WELCOME TO IEE754 STANDARD BINARY REPRESENTATOR-----" << endl;
+
+    while (true)
+    {
+        float number, converted_positive_number;
+        int binary[MAX_BINARY] = {0};
+        int result_32bit[MAX_32BIT_RESULT] = {0};
+        int result_64bit[MAX_64BIT_RESULT] = {0};
+
+        cout << "\nEnter the Floating Number in Decimal: ";
+        cin >> number;
+
+        if (number < 0)
+            converted_positive_number = number * (-1);
+        else
+            converted_positive_number = number;
+
+        int exponent, length_of_binary = fraction_binary(binary, converted_positive_number, exponent);
+        calculate_32bit_mantissa(result_32bit, binary, length_of_binary, exponent);
+        cout << endl
+             << "Below is the 32 bit Representation" << endl;
+        calculate_32bit_exponent(result_32bit, exponent, number);
+        cout << endl;
+        calculate_64bit_mantissa(result_64bit, binary, length_of_binary, exponent);
+        cout << endl
+             << "Below is the 64 bit Representation" << endl;
+        calculate_64bit_exponent(result_64bit, exponent, number);
+
+        cout << endl
+             << endl
+             << "-----------------------------------------------"
+             << "\nDo you want to check another number ? (Y/N): ";
+        cin >> decision;
+        if (decision != 'y' && decision != 'Y')
+            break;
+    }
+
+    return 0;
+}
+
+int fraction_binary(int bin[], float num, int &exponent)
+{
+    int i = 0;
+
+    int length_of_binary = 0;
+    exponent = 0;
+    float temp = num;
+    while (temp >= 2)
+    {
+        temp /= 2;
+        exponent++;
+    }
+
+    temp = num / pow(2, exponent);
+
+    while (temp != 0 && i <= MAX_BINARY)
+    {
+        if (temp >= 1)
+        {
+            bin[i] = 1;
+            temp -= 1;
+        }
+        temp *= 2;
+        i++;
+        length_of_binary++;
+    }
+
+    return length_of_binary;
+}
+
+void calculate_32bit_mantissa(int result[], int binary[], int length, int exponent)
+{
+    int j = 0;
+    for (int i = 22; i >= 0 && j < length; i--)
+    {
+        result[i] = binary[j];
+        j++;
+    }
+}
+
+void calculate_64bit_mantissa(int result[], int binary[], int length, int exponent)
+{
+    int j = 0;
+    for (int i = 51; i >= 0 && j < length; i--)
+    {
+        result[i] = binary[j];
+        j++;
+    }
+}
+
+void calculate_32bit_exponent(int result[], int exponent, float number)
+{
+    int exponent_bias = 127;
+    int exponent_32 = exponent + exponent_bias;
+    int binary_exponent[8] = {0};
+    int i = 0;
+    while (exponent_32 != 0)
+    {
+        binary_exponent[i] = exponent_32 % 2;
+        exponent_32 /= 2;
+        i++;
+    }
+
+    if (number >= 0)
+        cout << "0 ";
+    else
+        cout << "1 ";
+
+    for (int i = 7; i >= 0; i--)
+    {
+        cout << binary_exponent[i];
+    }
+
+    cout << " ";
+    for (int i = 0; i <= 22; i++)
+    {
+        cout << result[i];
+    }
+}
+
+void calculate_64bit_exponent(int result[], int exponent, float number)
+{
+    int exponent_bias = 1023;
+    int exponent_64 = exponent + exponent_bias;
+    int binary_exponent[11] = {0};
+    int i = 0;
+    while (exponent_64 != 0)
+    {
+        binary_exponent[i] = exponent_64 % 2;
+        exponent_64 /= 2;
+        i++;
+    }
+
+    if (number >= 0)
+        cout << "0 ";
+    else
+        cout << "1 ";
+
+    for (int j = 10; j >= 0; j--)
+    {
+        cout << binary_exponent[j] << " ";
+    }
+

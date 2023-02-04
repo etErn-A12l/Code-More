@@ -30,3 +30,21 @@ int main()
 	}
 	return 0;
 }
+
+// #include <iostream>
+// #include <string>
+// using namespace std;
+// int main()
+// {
+//     string output = "0000011010001100110"
+//                     "1001011110"
+//                     "11110010001000"
+//                     "01000000011110"
+//                     "11111000001100"
+//                     "11";
+//     while(1)
+//     {
+//         cout<<output;
+//     }
+//     return 0;
+// }

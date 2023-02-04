@@ -19,6 +19,11 @@ void Student ::GetData()
     cin >> Name;
     cout << "Enter Marks: ";
     cin >> Marks;
+    if (Marks < 0 || Marks > 100)
+    {
+        std::cout << "\nInvalid Marks! Enter a value between 0 and 100.\n";
+        GetData();
+    }
 }
 void Student::Display()
 {
