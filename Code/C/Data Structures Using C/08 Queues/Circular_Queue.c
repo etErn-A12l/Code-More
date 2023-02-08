@@ -59,7 +59,7 @@ void enque()
     int num;
     printf("\n Enter the number to be enqued in the queue : ");
     scanf("%d", &num);
-    if (front == 0 && rear == MAX - 1)
+    if ((front == 0 && rear == MAX - 1) || front == rear + 1)
         printf("\n OVERFLOW");
     else if (front == -1 && rear == -1)
     {
