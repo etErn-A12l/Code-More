@@ -4,4 +4,4 @@
 
 <br>
 
-### This will be a useless repo for you unless you are a college student of 1st or 2nd year 
+### This may become a benficial repository if you are an undergraduate computer student
