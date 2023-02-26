@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 #define POP_NO 5       // number of bats
 #define DIM 10         // number of dimensions
@@ -31,27 +32,24 @@ int main(int argc, char const *argv[])
     float A = (float)rand() / (float)RAND_MAX;
     float r = (float)rand() / (float)RAND_MAX;
 
-    short Iteration = 0;
+    short Iteration = 0, bestGen = 0;
 
     Initiate(x);
     calFitness(x);
 
     short bestIndex_X = bestFitness(x);
 
-    // for (short i = 0; i < POP_NO; i++)
-    //     printf("Fitness = %lf\n", x[i].fitness);
-
-    // printf("\n\nBest Fitness: %lf", x[bestIndex].fitness);
-
     while (Iteration++ < ITERATIONS)
     {
+        // system('cls');
         adjustFreq(x);
         updateVelocity(x, bestIndex_X);
         updatePosition(x);
         calFitness(x);
 
         bestIndex_X = bestFitness(x);
-        float X_bestFitness = x[bestIndex_X].fitness;
+        double X_bestFitness = x[bestIndex_X].fitness; // Index of Best fitness value
+        double overallBestFitness = X_bestFitness;     // Best fitness in new population
         float R = (float)rand() / (float)(RAND_MAX);
         struct bat y[POP_NO];
 
@@ -61,7 +59,9 @@ int main(int argc, char const *argv[])
 
         // Calculating fitness of the new local solutions
         calFitness(y);
-        short bestIndex_Y = bestFitness(y); // Index of Best fitness value
+
+        short bestIndex_Y = bestFitness(y);            // Index of Best fitness value
+        double Y_bestFitness = y[bestIndex_Y].fitness; // Best fitness in new population
 
         if (A < x[bestIndex_X].loudness && y[bestIndex_Y].fitness < X_bestFitness)
         {
@@ -72,10 +72,19 @@ int main(int argc, char const *argv[])
                     x[i].position[j] = y[i].position[j];
                 x[i].fitness = y[i].fitness;
             }
-
             // reduce loudness and increase puse rate
             updateLoudPulse(x);
         }
+
+        printf("\nBest fitness in Previous population: %lf", X_bestFitness);
+        printf("\nBest fitness in Current population: %lf", Y_bestFitness);
+
+        if (Y_bestFitness < overallBestFitness)
+        {
+            overallBestFitness = Y_bestFitness;
+            bestGen = Iteration;
+        }
+        printf("\n\nBest fitness was found at %hu Iteration with %lf Fitness", bestGen, Y_bestFitness);
     }
 
     return 0;
@@ -158,4 +167,16 @@ void genLocalSolutions(struct bat x[], struct bat y[])
 
 void updateLoudPulse(struct bat x[])
 {
+    float alpha = (float)rand() / (float)(RAND_MAX); // Random float between 0 and 1.
+    float t = 1, gamma = 0.9, r0;
+
+    for (short i = 0; i < POP_NO; i++)
+    {
+        // Reducing Loudness
+        x[i].loudness = alpha * x[i].loudness;
+
+        // Increasing Pulse Rate
+        r0 = x[i].pulse * 0.001 / 100; // 0.001 % of initial pulse rate
+        x[i].pulse = r0 * (1 - exp(-gamma * t));
+    }
 }
