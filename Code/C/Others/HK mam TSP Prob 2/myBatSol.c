@@ -41,50 +41,13 @@ int main(int argc, char const *argv[])
 
     double overallBestFitness;
 
-    // ==============================
-
-    // for (short i = 0; i < 10; i++)
-    // {
-
-    //     adjustFreq(x);
-    //     updateVelocity(x, bestIndex_X);
-    //     updatePosition(x);
-    //     calFitness(x);
-    //     bestIndex_X = bestFitness(x);
-
-    //     for (short i = 0; i < POP_NO; i++)
-    //         printf("\nX Fitness = %lf", x[i].fitness);
-
-    //     printf("\n\nBest X Fitness = %lf\n\n", x[bestIndex_X].fitness);
-
-    //     struct bat y[POP_NO];
-    //     genLocalSolutions(x, y);
-    //     calFitness(y);
-
-    //     for (short i = 0; i < POP_NO; i++)
-    //         printf("\nY Fitness = %lf", y[i].fitness);
-
-    //     printf("\n\nBest Y Fitness = %lf", y[bestFitness(y)].fitness);
-
-    //     for (short i = 0; i < POP_NO; i++)
-    //     {
-    //         for (short j = 0; j < DIM; j++)
-    //             x[i].position[j] = y[i].position[j];
-    //         x[i].fitness = y[i].fitness;
-    //     }
-
-    //     updateLoudPulse(x);
-
-    //     for (short i = 0; i < POP_NO; i++)
-    //         printf("\nX Fitness = %lf", x[i].fitness);
-
-    //     printf("\n\nBest X Fitness = %lf\n\n", x[bestIndex_X].fitness);
-    // }
-
     // =================================
 
     while (Iteration++ < ITERATIONS)
     {
+
+        printf("\nGen: %hu and Best Fitness %lf", Iteration, x[bestIndex_X].fitness);
+
         adjustFreq(x);
         updateVelocity(x, bestIndex_X);
         updatePosition(x);
@@ -94,8 +57,6 @@ int main(int argc, char const *argv[])
         overallBestFitness = x[bestIndex_X].fitness; // Best fitness in new population
         float R = (float)rand() / (float)(RAND_MAX);
         struct bat y[POP_NO];
-
-        printf("\nGen: %hu and Best Fitness %lf", Iteration, x[bestIndex_X].fitness);
 
         // Generating new local solutions
         if (R > r)
