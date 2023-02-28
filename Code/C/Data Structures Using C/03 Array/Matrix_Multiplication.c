@@ -10,16 +10,10 @@ int main()
     scanf("%d", &rows1);
     printf("\n Enter the number of columns in the first matrix : ");
     scanf("%d", &cols1);
-    printf("\n Enter the number of rows in the second matrix : ");
-    scanf("%d", &rows2);
     printf("\n Enter the number of columns in the second matrix : ");
     scanf("%d", &cols2);
 
-    if (cols1 != rows2)
-    {
-        printf("\n The number of columns in the first matrix must be equal to the number of rows in the second matrix");
-        exit();
-    }
+    rows2 = cols1;
     res_rows = rows1;
     res_cols = cols2;
 

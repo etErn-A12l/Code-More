@@ -3,7 +3,7 @@
 int main()
 {
     int i, j, mat[3][3], transposed_mat[3][3];
-    clrscr();
+
     printf("\n Enter the elements of the matrix ");
     for (i = 0; i < 3; i++)
     {
