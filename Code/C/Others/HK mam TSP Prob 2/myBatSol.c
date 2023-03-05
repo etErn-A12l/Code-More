@@ -40,6 +40,7 @@ int main(int argc, char const *argv[])
     short bestIndex_X = bestFitness(x);
 
     double overallBestFitness;
+    overallBestFitness = x[bestIndex_X].fitness; // Best fitness in new population
 
     // =================================
 
@@ -54,7 +55,7 @@ int main(int argc, char const *argv[])
         calFitness(x);
 
         bestIndex_X = bestFitness(x);
-        overallBestFitness = x[bestIndex_X].fitness; // Best fitness in new population
+        // printf("\nIntial OverallBest fitness: %lf = %lf", overallBestFitness, x[bestIndex_X].fitness);
         float R = (float)rand() / (float)(RAND_MAX);
         struct bat y[POP_NO];
 
@@ -78,16 +79,19 @@ int main(int argc, char const *argv[])
             }
             // reduce loudness and increase puse rate
             updateLoudPulse(x);
+            bestIndex_X = bestIndex_Y;
         }
 
-        if (y[bestIndex_Y].fitness < overallBestFitness)
+        if (x[bestIndex_X].fitness < overallBestFitness)
         {
-            overallBestFitness = y[bestIndex_Y].fitness;
+            overallBestFitness = x[bestIndex_X].fitness;
+            // printf("\nOverall best fitness changed to %lf = %lf", overallBestFitness, x[bestIndex_X].fitness);
             bestGen = Iteration;
+            // printf("\nBest Gen = %hu", bestGen);
         }
     }
 
-    printf("\n\nBest fitness was found at %hu Iteration with %lf Fitness", bestGen, overallBestFitness);
+    printf("\n\nBest fitness was found at %hu Iteration with %lf Fitness", bestGen + 1, overallBestFitness);
 
     return 0;
 }
