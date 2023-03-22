@@ -1,3 +1,49 @@
+IP = input("\nEnter the IP address: ")
+
+octets = IP.split(".")  # Splits the octets
+# Converts the Decimal of first octet to 8 bit binary
+binctet = "{0:b}".format(int(octets[0])).zfill(8)
+i = 0
+clss = ""
+for j in range(5):
+    if binctet[j] == "0":
+        i = j
+        clss = chr(65 + i)
+        break
+
+cls_s = 0
+cls_e = 2**7  # 127
+for j in range(i):
+    cls_s += 2**7 / 2**j
+    cls_e += 2**7 / 2 ** (j + 1)
+
+cls_r = f"{int(cls_s)}" + ".0" * 3 + " - " + f"{int(cls_e-1)}" + ".255" * 3
+c_hosts = 2 ** (32 - i - 1)
+n_hosts = 2 ** (8 * (4 - i - 1))
+n_id = ".".join(octets[: i + 1])
+h_id = "x." * (i + 1) + ".".join(octets[i + 1 :])
+net_r = f"{n_id}" + ".0" * (2 - i) + ".1" + " - " + f"{n_id}" + ".0" * (2 - i) + ".254"
+n_id += ".0" * (3 - i)
+n_mask = "255." * (i + 1) + "0." * (3 - i)
+h_mask = "0." * (i + 1) + "255." * (3 - i)
+p = 1 if i < 3 else 0
+
+print()
+print(f"{'Given IP Address ':<24}: {IP}")
+print(f"{'Given IP Class ':<24}: Class {clss}")
+print(f"{'Class Range ':<24}: " + f"{cls_r}" * p + "N/A" * (1 - p))
+print(f"{'Possible Class Hosts ':<24}: " + f"{c_hosts}" * p + "N/A" * (1 - p))
+print(f"{'Possible Network Hosts ':<24}: " + f"{n_hosts}" * p + "N/A" * (1 - p))
+print(f"{'Network Mask ':<24}: " + f"{n_mask}" * p + "N/A" * (1 - p))
+print(f"{'Host Mask ':<24}: " + f"{h_mask}" * p + "N/A" * (1 - p))
+print(f"{'Network ID of Given IP ':<24}: " + f"{n_id}" * p + "N/A" * (1 - p))
+print(f"{'Host ID of Given IP ':<24}: " + f"{h_id}" * p + "N/A" * (1 - p))
+print(f"{'Network Range ':<24}: " + f"{net_r}" * p + "N/A" * (1 - p))
+print()
+
+
+'''
+
 # Define IP Class related information in a dictionary
 ip_info = {
     "A": {
@@ -54,3 +100,5 @@ print(f"{'Network ID of Given IP:':<24} {NetID}")
 print(f"{'Host ID of Given IP:':<24} {HostID}")
 print(f"{'Range of IP Network:':<24} {Ren_S} - {Ren_E}")
 print()
+
+'''
