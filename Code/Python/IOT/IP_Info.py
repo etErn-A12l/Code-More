@@ -26,19 +26,18 @@ net_r = f"{n_id}" + ".0" * (2 - i) + ".1" + " - " + f"{n_id}" + ".0" * (2 - i) +
 n_id += ".0" * (3 - i)
 n_mask = "255." * (i + 1) + "0." * (3 - i)
 h_mask = "0." * (i + 1) + "255." * (3 - i)
-p = 1 if i < 3 else 0
 
 print()
 print(f"{'Given IP Address ':<24}: {IP}")
 print(f"{'Given IP Class ':<24}: Class {clss}")
-print(f"{'Class Range ':<24}: " + f"{cls_r}" * p + "N/A" * (1 - p))
-print(f"{'Possible Class Hosts ':<24}: " + f"{c_hosts}" * p + "N/A" * (1 - p))
-print(f"{'Possible Network Hosts ':<24}: " + f"{n_hosts}" * p + "N/A" * (1 - p))
-print(f"{'Network Mask ':<24}: " + f"{n_mask}" * p + "N/A" * (1 - p))
-print(f"{'Host Mask ':<24}: " + f"{h_mask}" * p + "N/A" * (1 - p))
-print(f"{'Network ID of Given IP ':<24}: " + f"{n_id}" * p + "N/A" * (1 - p))
-print(f"{'Host ID of Given IP ':<24}: " + f"{h_id}" * p + "N/A" * (1 - p))
-print(f"{'Network Range ':<24}: " + f"{net_r}" * p + "N/A" * (1 - p))
+print(f"{'Class Range ':<24}: " + f"{cls_r}" * (i<3) + "N/A" * (i>=3))
+print(f"{'Possible Class Hosts ':<24}: " + f"{c_hosts}" * (i<3) + "N/A" * (i>=3))
+print(f"{'Possible Net Hosts ':<24}: " + f"{n_hosts}" * (i<3) + "N/A" * (i>=3))
+print(f"{'Network Mask ':<24}: " + f"{n_mask}" * (i<3) + "N/A" * (i>=3))
+print(f"{'Host Mask ':<24}: " + f"{h_mask}" * (i<3) + "N/A" * (i>=3))
+print(f"{'Network ID of IP ':<24}: " + f"{n_id}" * (i<3) + "N/A" * (i>=3))
+print(f"{'Host ID of IP ':<24}: " + f"{h_id}" * (i<3) + "N/A" * (i>=3))
+print(f"{'Network Range ':<24}: " + f"{net_r}" * (i<3) + "N/A" * (i>=3))
 print()
 
 
