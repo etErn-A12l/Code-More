@@ -10,6 +10,16 @@ def xor(a, b):
     return r
 
 
+def zeroBits(r):
+    c = 0
+    for k in range(len(r)):  # Checking how many bits are '0' from left to right
+        if r[k] != "1":
+            c += 1
+        else:
+            break
+    return c
+
+
 o_data = input("Enter original data in binary: ")
 dvsr = input("Enter the divisor in binary: ")
 
@@ -24,25 +34,27 @@ inDiv = dvdent[: len(dvsr)]
 r = ""
 i = len(dvsr) - 1
 print(f"Initilly i = {i}")
-while i <= len(dvdent):  # Until we reach the last bit of dvdent
+
+while i < len(dvdent):  # Until we reach the last bit of dvdent
 
     r = xor(inDiv, chck(inDiv, dvsr))  # bit wise xor operation
     print(f"XOR ({inDiv} , {chck(inDiv,dvsr)}) = ({r})")
 
+    c = zeroBits(r)
+
+    if c > len(dvdent) - i - 1: # if number of 0 bits are more than the bits left in divdent
+        c = len(dvdent) - i - 1 # replace c with the number of bits left in divdent
+
+    r = r[c:]  # Discarding '0' bits
+    print(f"Discarded bits from = ({c}), r = ({r})")
+
     if i == len(dvdent) - 1:  # If last bit is already used, break
         break
 
-    c = 0
-    for k in range(len(r)):  # Checking how many bits are '0' from left to right
-        if r[k] != "1":
-            c += 1
-        else:
-            break
+    for k in range(c):
 
-    r = r[c:]  # Discarding '0' bits
-
-    for k in range(c + 1):
-        r += dvdent[k + i]
+        print(f"Appending dvdent[{k + i + 1}], {dvdent[k + i + 1]}")
+        r += dvdent[k + i + 1]
 
     inDiv = r
     i += c
@@ -58,8 +70,8 @@ while i <= len(dvdent):  # Until we reach the last bit of dvdent
 #     print(f"{r[:-1]}" + f" + {r[-1]}")
 #     inDiv = r[1:]
 
-print(f"Final r = {r[2:]}")
+print(f"Final r = {r}")
 
-transmitter = o_data + r[2:]
+transmitter = o_data + r
 
 print(f"Transmit it: {transmitter}")
