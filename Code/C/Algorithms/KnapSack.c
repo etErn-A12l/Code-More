@@ -50,7 +50,7 @@ int knapSack_01(int W, int wt[], int val[], int n)
     return K[n][W];
 }
 
-int fractional_knapsack(int W, int n, int val[], int wt[])
+void fractional_knapsack(int W, int n, int val[], int wt[])
 {
     float kept = 0, value = 0;
     float pi_wi[n];
@@ -70,26 +70,34 @@ int fractional_knapsack(int W, int n, int val[], int wt[])
         }
     }
 
+    printf("\nProfit\t");
     for (short i = 0; i < n; i++)
-        printf("val = %d\t", val[i]);
-    printf("\n");
+        printf("\t%d", val[i]);
+    printf("\nWeight\t");
     for (short i = 0; i < n; i++)
-        printf("wt = %d\t\t", wt[i]);
-    printf("\n");
+        printf("\t%d", wt[i]);
+    printf("\nFraction");
     for (short i = 0; i < n; i++)
-        printf("fr = %f\t", pi_wi[i]);
+        printf("\t%.2f", pi_wi[i]);
 
     short iterator = 0;
-    while (kept <= W)
+    while (kept < W)
     {
         int storage_left = W - kept;
-        if (wt[iterator] <= storage_left){
+        if (wt[iterator] <= storage_left)
+        {
             kept += wt[iterator];
             value += val[iterator];
         }
+        else
+        {
+            float profit = (float)val[iterator] * storage_left / wt[iterator];
+            value += profit;
+            kept += storage_left;
+        }
+        iterator++;
     }
-
-    return 0;
+    printf("\n\nGot PROFIT: %.2f, Total wight: %.f\n\n", value, kept);
 }
 
 int main()
@@ -101,6 +109,6 @@ int main()
 
     // printf("The maximum value that can be put in a knapsack of capacity %d is: %d\n", W, knapSack_01(W, wt, val, n));
 
-    int ab = fractional_knapsack(W, n, val, wt);
+    fractional_knapsack(W, n, val, wt);
     return 0;
 }
