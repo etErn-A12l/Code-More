@@ -3,9 +3,9 @@
 #include <time.h>
 #include <math.h>
 
-#define POP_NO 5      // number of bats
-#define DIM 10        // number of dimensions
-#define ITERATIONS 40 // number of iterations
+#define POP_NO 30      // 44-43       // number of bats
+#define DIM 2          // number of dimensions
+#define ITERATIONS 1000 // number of iterations
 
 struct bat
 {
@@ -20,14 +20,14 @@ void adjustFreq(struct bat bats[], struct bat nBats[]);
 void updtVel(struct bat bats[], struct bat nBats[], short Index);
 void updtPos(struct bat bats[], struct bat nBats[]);
 void genLclSol(struct bat bats[], short index);
-void updateLoudPulse(struct bat bats[]);
-float maxFreq(struct bat bats[]);
-float minFreq(struct bat bats[]);
+void updateLoudPulse(struct bat bats[], int Iteration);
+// float maxFreq(struct bat bats[]);
+// float minFreq(struct bat bats[]);
 
 int main(int argc, char const *argv[])
 {
     struct bat x[POP_NO];
-    srand((unsigned int)time(NULL)); // seedind with the value of current time
+    srand(0); // seedind with the value of current time
 
     // Generate random frequencies and loud
     float A = (float)rand() / (float)RAND_MAX;
@@ -47,11 +47,11 @@ int main(int argc, char const *argv[])
     {
         struct bat y[POP_NO]; // New Solutions
 
-        printf("\n\n\n\t\t\t\t\t======= Gen: %hu FITNESS: ======\n\n\n", Itr);
+        printf("\n\n\n\t\t======= ITERATION: %hu FITNESS =======\n\n\n", Itr);
         for (short i = 0; i < POP_NO; i++)
-            printf("  BAT %hu = %f  |", i + 1, x[i].fit);
+            printf("\n  BAT %hu : \t%.3lf  ", i + 1, 1000 - x[i].fit);
 
-        printf("\n\n  Best Fitness : %lf  From BAT %hu\n", x[bst_IDX].fit, bst_IDX + 1);
+        printf("\n\n  Best Fitness : %.3lf  From BAT %hu\n", 1000 - x[bst_IDX].fit, bst_IDX + 1);
 
         adjustFreq(x, y);
         updtVel(x, y, bst_IDX);
@@ -69,16 +69,14 @@ int main(int argc, char const *argv[])
 
             if (r < x[i].loud && y[i].fit < x[i].fit)
                 // reduce loud and increase puse rate
-                updateLoudPulse(x);
+                updateLoudPulse(x, Itr);
         }
-
-        calFitness(y);
 
         // ==== RANKING THE NEW SOLUTIONS ====
 
         for (short i = 0; i < POP_NO; i++)
         {
-            if (y[i].fit < x[i].fit) // Accepting New Solution
+            if (y[i].fit < x[i].fit) // Conditionally accept New Solution
             {
                 x[i].fit = y[i].fit;
                 x[i].freq = y[i].freq;
@@ -95,9 +93,7 @@ int main(int argc, char const *argv[])
         if (x[bst_IDX].fit < gBstFit)
         {
             gBstFit = x[bst_IDX].fit;
-            // printf("\nOverall best fit changed to %lf = %lf", gBstFit, x[bst_IDX].fit);
             bestGen = Itr;
-            // printf("\nBest Gen = %hu", bestGen);
         }
     }
 
@@ -108,14 +104,19 @@ int main(int argc, char const *argv[])
 
 void Initiate(struct bat bats[])
 {
-
+    // Assigning random values
     for (short i = 0; i < POP_NO; i++)
     {
         for (short j = 0; j < DIM; j++)
         {
-            bats[i].pos[j] = ((float)rand() / (float)(RAND_MAX)) * (2 - 0) + 0;
             bats[i].vel[j] = (float)rand() / (float)(RAND_MAX);
+            // bats[i].pos[j] = ((float)rand() / (float)(RAND_MAX)) * (5.12 - (-5.12)) + (-5.12);
         }
+        bats[i].pos[0] = ((float)rand() / (float)(RAND_MAX)) * (12.1 - (4.12)) + (4.12);
+        bats[i].pos[1] = ((float)rand() / (float)(RAND_MAX)) * (7.12 - (4.12)) + (4.12);
+
+        // bats[i].pos[0] = ((float)rand() / (float)(RAND_MAX)) * (12.1 - (3.0)) + (3.0);
+        // bats[i].pos[1] = ((float)rand() / (float)(RAND_MAX)) * (5.8 - (4.1)) + (4.1);
 
         bats[i].pulse = ((float)rand() / (float)(RAND_MAX)) * (1 - 0) + 0;
         bats[i].loud = ((float)rand() / (float)(RAND_MAX)) * (2 - 1) + 1;
@@ -127,12 +128,20 @@ void calFitness(struct bat bats[])
 {
     for (short i = 0; i < POP_NO; i++)
     {
-        double sum = 0;
+        // double sum = 0;
 
-        for (short j = 0; j < DIM; j++)
-            sum += pow(bats[i].pos[j], 2);
+        // for (short j = 0; j < DIM; j++)
+        //     sum += pow(bats[i].pos[j], 2);
 
-        bats[i].fit = sum;
+        // bats[i].fit = sum;
+        bats[i].fit = 1000 - (21.5 + bats[i].pos[0] * sin(4 * (22 / 7) * bats[i].pos[0]) + bats[i].pos[1] * sin(20 * (22 / 7) * bats[i].pos[1]));
+        // int D = 5;
+        // for (short j = 0; j < DIM; j++)
+        // {
+        //     sum += pow(bats[i].pos[j], 2) - 10 * cos(2 * (22 / 7) * bats[i].pos[j]);
+        // }
+        // sum + 10 * D;
+        // bats[i].fit = sum;
     }
 }
 
@@ -179,8 +188,8 @@ void genLclSol(struct bat bats[], short index)
 
     avgLoud = sum / POP_NO;
 
-    float Eta = ((float)rand() / (float)(RAND_MAX));
-    Eta = Eta * 2.0f - 1.0f; // Random number between 1 and -1
+    float Eta = ((float)rand() / (float)(RAND_MAX)) * 2.0f - 1.0f; // Random number between 1 and -1
+    // float Eta = 0.6294;
 
     for (short j = 0; j < DIM; j++)
     {
@@ -194,21 +203,23 @@ void genLclSol(struct bat bats[], short index)
     }
 }
 
-void updateLoudPulse(struct bat bats[])
+void updateLoudPulse(struct bat bats[], int Iteration)
 {
-    float alpha = 0.5;
-    float t = 1, gamma = 0.9, r0;
+    float ALPHA = 0.9;
+    float t = Iteration, GAMMA = 0.9, r0;
 
     for (short i = 0; i < POP_NO; i++)
     {
         // Reducing Loudness
-        bats[i].loud = alpha * bats[i].loud;
+        bats[i].loud = ALPHA * bats[i].loud;
 
         // Increasing Pulse Rate
         r0 = bats[i].pulse * 0.001 / 100; // 0.001 % of initial pulse rate
-        bats[i].pulse = r0 * (1 - exp(-gamma * t));
+        bats[i].pulse = r0 * (1 - exp(-GAMMA * t));
     }
 }
+
+/*
 
 float maxFreq(struct bat bats[])
 {
@@ -226,3 +237,5 @@ float minFreq(struct bat bats[])
         Index = (bats[i].freq < bats[Index].freq) ? i : Index;
     return bats[Index].freq;
 }
+
+*/
