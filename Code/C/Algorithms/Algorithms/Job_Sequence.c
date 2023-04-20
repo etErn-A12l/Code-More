@@ -3,7 +3,7 @@
 
 typedef struct Job
 {
-    char id[9];
+    char id[5];
     int profit;
     int deadline;
 } Job;
