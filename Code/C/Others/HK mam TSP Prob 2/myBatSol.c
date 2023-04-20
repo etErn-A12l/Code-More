@@ -21,8 +21,6 @@ void updtVel(struct bat bats[], struct bat nBats[], short Index);
 void updtPos(struct bat bats[], struct bat nBats[]);
 void genLclSol(struct bat bats[], short index);
 void updateLoudPulse(struct bat bats[], int Iteration);
-// float maxFreq(struct bat bats[]);
-// float minFreq(struct bat bats[]);
 
 int main(int argc, char const *argv[])
 {
@@ -157,13 +155,8 @@ short bestFitness(struct bat bats[])
 
 void adjustFreq(struct bat bats[], struct bat nBats[])
 {
-    // float beta = (float)rand() / (float)RAND_MAX;
     for (short i = 0; i < POP_NO; i++)
-    {
-        // printf("\nMin Freq = %f\t Max Freq = %f", minFreq(x), maxFreq(x));
-        // nBats[i].freq = minFreq(bats) + (maxFreq(bats) - minFreq(bats)) * beta;
         nBats[i].fit = ((float)rand() / (float)(RAND_MAX)) * (2 - 0) + 0;
-    }
 }
 
 void updtVel(struct bat bats[], struct bat nBats[], short Index)
@@ -218,24 +211,3 @@ void updateLoudPulse(struct bat bats[], int Iteration)
         bats[i].pulse = r0 * (1 - exp(-GAMMA * t));
     }
 }
-
-/*
-
-float maxFreq(struct bat bats[])
-{
-    short Index = 0;
-    for (short i = 0; i < POP_NO; i++)
-        Index = (bats[i].freq > bats[Index].freq) ? i : Index;
-
-    return bats[Index].freq;
-}
-
-float minFreq(struct bat bats[])
-{
-    short Index = 0;
-    for (short i = 0; i < POP_NO; i++)
-        Index = (bats[i].freq < bats[Index].freq) ? i : Index;
-    return bats[Index].freq;
-}
-
-*/
