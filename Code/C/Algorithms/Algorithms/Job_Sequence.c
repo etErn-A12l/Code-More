@@ -17,30 +17,29 @@ int minValue(int x, int y)
 
 int main()
 {
-    int i, j;
+    int n;
+    printf("\nEnter the number of Jobs: ");
+    scanf("%d", &n);
 
-    int n = 9;
+    Job jobs[n];
 
-    Job jobs[9] = {
-        {"T1", 15, 7},
-        {"T2", 20, 2},
-        {"T3", 30, 5},
-        {"T4", 18, 3},
-        {"T5", 18, 4},
-        {"T6", 10, 5},
-        {"T7", 23, 2},
-        {"T8", 16, 7},
-        {"T9", 25, 3}};
-
-    Job temp;
-
-    for (i = 1; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        for (j = 0; j < n - i; j++)
+        printf("Enter %dth Job's Name: ", i + 1);
+        scanf("%s", &jobs[i].id);
+        printf("Enter %dth Job's Profit: ", i + 1);
+        scanf("%d", &jobs[i].profit);
+        printf("Enter %dth Job's Deadline: ", i + 1);
+        scanf("%d", &jobs[i].deadline);
+    }
+
+    for (int i = 1; i < n; i++)
+    {
+        for (int j = 0; j < n - i; j++)
         {
             if (jobs[j + 1].profit > jobs[j].profit)
             {
-                temp = jobs[j + 1];
+                Job temp = jobs[j + 1];
                 jobs[j + 1] = jobs[j];
                 jobs[j] = temp;
             }
@@ -48,7 +47,7 @@ int main()
     }
 
     printf("%10s %10s %10s\n\n", "Job", "Profit", "Deadline");
-    for (i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
         printf("%10s %10i %10i\n", jobs[i].id, jobs[i].profit, jobs[i].deadline);
 
     jobSequenceDeadline(jobs, n);
