@@ -27,18 +27,18 @@ crc_len = len(dvsr) - 1
 
 dvdent = o_data + "0" * crc_len
 
-print(f"{dvdent} / {dvsr}")
+# print(f"{dvdent} / {dvsr}")
 
 inDiv = dvdent[: len(dvsr)]
 
 r = ""
 i = len(dvsr) - 1
-print(f"Initilly i = {i}")
+# print(f"Initilly i = {i}")
 
 while i < len(dvdent):  # Until we reach the last bit of dvdent
 
     r = xor(inDiv, chck(inDiv, dvsr))  # bit wise xor operation
-    print(f"XOR ({inDiv} , {chck(inDiv,dvsr)}) = ({r})")
+    # print(f"XOR ({inDiv} , {chck(inDiv,dvsr)}) = ({r})")
 
     c = zeroBits(r)
 
@@ -46,20 +46,20 @@ while i < len(dvdent):  # Until we reach the last bit of dvdent
         c = len(dvdent) - i - 1 # replace c with the number of bits left in divdent
 
     r = r[c:]  # Discarding '0' bits
-    print(f"Discarded bits from = ({c}), r = ({r})")
+    # print(f"Discarded bits from = ({c}), r = ({r})")
 
     if i == len(dvdent) - 1:  # If last bit is already used, break
         break
 
     for k in range(c):
 
-        print(f"Appending dvdent[{k + i + 1}], {dvdent[k + i + 1]}")
+        # print(f"Appending dvdent[{k + i + 1}], {dvdent[k + i + 1]}")
         r += dvdent[k + i + 1]
 
     inDiv = r
     i += c
 
-    print(f"Updated r = {r}, i = {i}")
+    # print(f"Updated r = {r}, i = {i}")
 
 
 # for i in range(len(dvdent) - len(dvsr)):
