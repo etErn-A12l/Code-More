@@ -1,7 +1,7 @@
 #include <stdio.h>
-#define MAX 10
+#define MAX 5
 
-int arr[MAX] = {43, 37, 24, 86, 52, 74, 54, 93, 42, 67};
+int arr[MAX];
 int brr[MAX];
 
 void merge(int low, int mid, int high);
@@ -9,7 +9,14 @@ void mergeSort(int low, int high);
 
 int main()
 {
+    printf("Enter the elements for the array: \n\n");
+    for (int i = 0; i < MAX; i++)
+    {
+        printf("Enter element for index %d: ", i);
+        scanf("%d", &arr[i]);
+    }
     mergeSort(0, MAX - 1);
+    printf("\nThe Sorted array is Below: \n");
     for (int i = 0; i < MAX; i++)
         printf("\t%d", arr[i]);
     return 0;
