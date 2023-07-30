@@ -2,8 +2,7 @@
 
 public class For_loop {
     public static void main(String[] args) {
-        int var = 0;
-        for (var = 0; var < 79; var++) {
+        for (int var = 0; var < 79; var++) {
             // System.out.println(var);
             System.out.println("I have to pass GATE");
         }

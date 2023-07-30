@@ -10,13 +10,15 @@ public class Variables {
     double yuy = 87.8d;
     boolean sk = false;
 
-    System.out.println("Tor baba");
+    final String str = "Xron Trix";
+
+    System.out.println("Tor baba " + str);
     System.out.println(ami);
     System.out.println(q);
     System.out.println(qq);
     System.out.println(aq);
     System.out.println(sk);
     System.out.println(yuy);
-
+    // sout
   }
 }
