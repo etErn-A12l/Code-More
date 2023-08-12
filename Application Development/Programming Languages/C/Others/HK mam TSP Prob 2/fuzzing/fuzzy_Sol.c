@@ -6,14 +6,20 @@
 #include <time.h>
 #include <limits.h>
 #include <float.h>
+#include <pthread.h>
 
-#define POP_NO 50         // 44-43       // number of bats
-#define DIM 71            // number of dimensions
+#define POP_NO 42          // 44-43       // number of bats
+#define DIM 71             // number of dimensions
 #define ITERATIONS 5900000 // number of iterations
+#define MAX_THREAD 6       // Number of threads
+#define COOL_RATE 0.99
+#define TEMP 100
+#define NUM_THREADS 6
+#define PAIRS_PER_THREAD 7
 
-const char *fName = "F:/Documents/TEMP/HK Mam/ftv70.txt";
-const char *redefined_matrix = "F:/Documents/Everything/Code-More/Code/C/Others/HK mam TSP Prob 2/fuzzing/re_ftv70.txt";
-const char *output = "F:/Documents/Everything/Code-More/Code/C/Others/HK mam TSP Prob 2/fuzzing/re_ftv70_sol.txt";
+const char *fName = "/home/xron/Drives/Docs_And_Media/Temp_Linux_WorkDir/TSP-BAT/ftv70.txt";
+const char *redefined_matrix = "/home/xron/Drives/Docs_And_Media/Documents/Everything/Code-More/Application Development/Programming Languages/C/Others/HK mam TSP Prob 2/fuzzing/re_ftv70.txt";
+const char *output = "/home/xron/Drives/Docs_And_Media/Documents/Everything/Code-More/Application Development/Programming Languages/C/Others/HK mam TSP Prob 2/fuzzing/re_ftv70_sol_1.txt";
 const int opt_fit = 1950;
 int **matrix;
 float ***new_matrix;
@@ -26,6 +32,14 @@ typedef struct
     double fit;
     int pos[DIM];
 } BAT;
+
+typedef struct
+{
+    BAT *bats;
+    BAT *nBats;
+    int start_index;
+    int end_index;
+} ThreadData;
 
 void Initiate(BAT[]);
 void calFitness(BAT[]);
@@ -44,9 +58,6 @@ void swap(int *, int, int);
 
 void InverseMutation(int *);
 void Cyclic_Crossover(int *, int *);
-void CancyCrushUpdate(int *);
-void VelocityMutation(int *, float *);
-void Random_Mutation(int *);
 int hasDuplicate(BAT[]);
 float avg_vel(float[]);
 void lin_kernighan(int *);
@@ -58,10 +69,12 @@ void reverse(int *, int, int);
 void Swap_Operator(int *tour);
 void apply_3_opt(int *path, int i, int j, int k);
 void Simul_Annel_3_Opt(int *path, double temperature, double cooling_rate);
+void *processPairs(void *data);
+float max_velocity(float *vel);
 
 int main(int argc, char const *argv[])
 {
-    // system("cls");
+    system("clear");
     clock_t start_time, end_time;
     start_time = clock(); // Record the starting time
     matrix = read_matrix(fName, &ROW);
@@ -84,7 +97,8 @@ int main(int argc, char const *argv[])
     // Generate random frequencies and loud
     float A = (float)rand() / (float)RAND_MAX;
 
-    int Itr = 0, bestGen = 0;
+    int bestGen = 0;
+    long Itr = 0;
 
     Initiate(x);
 
@@ -97,35 +111,24 @@ int main(int argc, char const *argv[])
 
     int test_count = 0;
     // printf("\n\n");
-    while (Itr++ < ITERATIONS)
-    // do
+    // while (Itr++ < ITERATIONS)
+    do
     {
-        // system("cls");
+        // system("clear");
 
-        hasDuplicate(x);
         BAT y[POP_NO]; // New Solutions
 
         // Prepare New Solution
         for (int i = 0; i < POP_NO; i++)
             memcpy(y[i].pos, x[i].pos, ROW * sizeof(int));
 
-        // printf("\n\n\n\t\t======= FITNESS OF %d ITERATION =======\n\n\n", Itr);
-        // for (int i = 0; i < POP_NO; i++)
-        // {
-        //     printf("\n  BAT %d : \t%d  ", i + 1, x[i].fit);
-        //     // printf("\n\n================\n\n");
-        //     // for (int k = 0; k < ROW; k++)
-        //     //     printf(" %d", x[i].pos[k]);
-        // }
         end_time = clock();
         double exectime = (double)(end_time - start_time) / CLOCKS_PER_SEC;
-        printf("\r  Iteration : %6d | Best Fitness : %6.2lf | From BAT : %4d |", Itr, x[bst_IDX].fit, bst_IDX + 1);
-        formatTime(exectime);
+        printf("\r  Iteration : %6ld | Best Fitness : %6.2lf | From BAT : %4d", Itr, x[bst_IDX].fit, bst_IDX + 1);
+        // formatTime(exectime);
         adjustFreq(y);
         updtVel(x, y, bst_IDX);
         updtPos(x, y, bst_IDX);
-
-        hasDuplicate(y);
 
         calFitness(y);
 
@@ -187,9 +190,8 @@ int main(int argc, char const *argv[])
             bestBat.fit = x[bst_IDX].fit;
             memcpy(bestBat.pos, x[bst_IDX].pos, ROW * sizeof(int));
         }
-        // Itr++;
-    }
-    // while (bestBat.fit > opt_fit);
+        Itr++;
+    } while (bestBat.fit > opt_fit);
 
     printf("\n\n  ");
     for (int c = 0; c < 100; c++)
@@ -334,26 +336,98 @@ void calFitness(BAT bats[])
 //                       Updater Functions
 // =================================================================
 
+// void updtPos(BAT *bats, BAT *nBats, int B_ind)
+// {
+//     // printf("\n");
+//     for (int i = 0; i < POP_NO; i++)
+//     {
+//         Simul_Annel_3_Opt(nBats[i].pos, 100, 0.99);
+//         if (bats[i].fit < fitness(nBats[i].pos))
+//         {
+//             simulated_annealing(nBats[i].pos, 100, 0.99);
+
+//             // lin_kernighan(nBats[i].pos);
+//             if (bats[i].fit < fitness(nBats[i].pos))
+//             {
+//                 // printf(" %d", i);
+//                 rgibnnm(nBats[i].pos);
+//                 Swap_Operator(nBats[i].pos);
+//             }
+//         }
+//     }
+//     // printf("\n");
+// }
+
 void updtPos(BAT *bats, BAT *nBats, int B_ind)
 {
-    // printf("\n");
-    for (int i = 0; i < POP_NO; i++)
+    pthread_t threads[NUM_THREADS];
+    ThreadData threadData[NUM_THREADS];
+
+    int pairs_per_thread = PAIRS_PER_THREAD;
+    int remaining_pairs = POP_NO % NUM_THREADS;
+
+    int pair_count = 0;
+    for (int i = 0; i < NUM_THREADS; i++)
     {
-        Simul_Annel_3_Opt(nBats[i].pos, 100, 0.99);
+        threadData[i].bats = bats;
+        threadData[i].nBats = nBats;
+
+        int pairs_to_process = pairs_per_thread;
+        if (remaining_pairs > 0)
+        {
+            pairs_to_process++;
+            remaining_pairs--;
+        }
+
+        threadData[i].start_index = pair_count;
+        threadData[i].end_index = pair_count + pairs_to_process - 1;
+
+        pthread_create(&threads[i], NULL, processPairs, (void *)&threadData[i]);
+
+        pair_count += pairs_to_process;
+    }
+
+    for (int i = 0; i < NUM_THREADS; i++)
+    {
+        pthread_join(threads[i], NULL);
+    }
+}
+
+void *processPairs(void *data)
+{
+    ThreadData *threadData = (ThreadData *)data;
+    BAT *bats = threadData->bats;
+    BAT *nBats = threadData->nBats;
+    int start_index = threadData->start_index;
+    int end_index = threadData->end_index;
+
+    for (int i = start_index; i <= end_index; i++)
+    {
+        float cool = max_velocity(bats[i].vel);
+
+        InverseMutation(nBats[i].pos);
+        // twoOpt(nBats[i].pos);
+        // Simul_Annel_3_Opt(nBats[i].pos, TEMP, cool);
         if (bats[i].fit < fitness(nBats[i].pos))
         {
-            simulated_annealing(nBats[i].pos, 100, 0.99);
+            Simul_Annel_3_Opt(nBats[i].pos, TEMP, cool);
 
             // lin_kernighan(nBats[i].pos);
             if (bats[i].fit < fitness(nBats[i].pos))
             {
-                // printf(" %d", i);
-                rgibnnm(nBats[i].pos);
-                Swap_Operator(nBats[i].pos);
+                simulated_annealing(nBats[i].pos, TEMP, cool);
+
+                // memcpy(nBats[i].pos, bats[i].pos, ROW * sizeof(int));
+                if (bats[i].fit < fitness(nBats[i].pos))
+                {
+                    rgibnnm(nBats[i].pos);
+                    Swap_Operator(nBats[i].pos);
+                }
             }
         }
     }
-    // printf("\n");
+
+    pthread_exit(NULL);
 }
 
 void adjustFreq(BAT nBats[])
@@ -366,7 +440,12 @@ void updtVel(BAT bats[], BAT nBats[], int Index)
 {
     for (int i = 0; i < POP_NO; i++)
         for (int j = 0; j < DIM; j++)
-            nBats[i].vel[j] = bats[i].vel[j] + (bats[i].pos[j] - bats[Index].pos[j]) * bats[i].freq;
+        // nBats[i].vel[j] = bats[i].vel[j] + (bats[i].pos[j] - bats[Index].pos[j]) * bats[i].freq;
+        {
+            float vel = bats[i].vel[j] + (distance(bats[i].pos[j], bats[Index].pos[j]) * bats[i].freq);
+            int i_vel = (int)vel;
+            nBats[i].vel[j] = vel - i_vel;
+        }
 }
 
 void genLclSol(BAT bats[], int ind, int bst)
@@ -470,39 +549,67 @@ void two_opt(BAT bat, int **matrix)
     // printf("\n  New Fitness : %d", bat.fit);
 }
 
-void Random_Mutation(int *pos)
+void rgibnnm(int *tour)
 {
-    int n = (ROW / 2) - 2;
-    if (n % 2 == 1)
-        n += 1; // Making Even number
-    int indices[n];
-    for (int k = 0; k < n; k++)
-        indices[k] = rand() % ROW;
-
-    for (int k = 0; k < n; k += 2)
-        swap(pos, indices[k], indices[k + 1]);
-}
-
-void CancyCrushUpdate(int *pos)
-{
-    double min_fit = fitness(pos);
-    int index = 0, temp;
-
-    for (int q = 0; q < ROW / 2; q++)
+    // printf("Entered");
+    int n = ROW;
+    int x = 0, improved = 0;
+    int s_tour[ROW];
+    memcpy(s_tour, tour, n * sizeof(int));
+    while (!improved && x < n)
     {
-        swap(pos, q, ROW - 1 - q);
-        double anew_fit = fitness(pos);
-        if (anew_fit < min_fit)
+        // Select a random gene
+        int gene = x;
+        double old_fit = fitness(tour);
+        // Find the nearest neighbor of the selected gene
+        int nearest = -1;
+        int min_dist = INT_MAX;
+        for (int i = 0; i < n; i++)
         {
-            index = q;
-            min_fit = anew_fit;
+            if (i != gene)
+            {
+                int dist = distance(tour[gene], tour[i]);
+                if (dist < min_dist)
+                {
+                    min_dist = dist;
+                    nearest = i;
+                }
+            }
         }
-        // Revert
-        swap(pos, q, ROW - 1 - q);
-    }
 
-    if (min_fit != fitness(pos))
-        swap(pos, index, ROW - 1 - index);
+        // Insert the selected gene beside its nearest neighbor
+        if (nearest != -1)
+        {
+            int temp = tour[gene];
+            if (gene < nearest)
+            {
+                for (int i = gene; i < nearest; i++)
+                    tour[i] = tour[i + 1];
+
+                tour[nearest] = temp;
+            }
+            else
+            {
+                for (int i = gene; i > nearest + 1; i--)
+                    tour[i] = tour[i - 1];
+
+                tour[nearest + 1] = temp;
+            }
+            // if (nearest != ROW - 1)
+            // swap(tour, gene, (nearest + 1) % ROW);
+            // else
+            //     swap(tour, gene, nearest - 1);
+        }
+        double new_fit = fitness(tour);
+        if (new_fit < old_fit)
+            improved = 1;
+        else
+        {
+            memcpy(tour, s_tour, n * sizeof(int));
+            x++;
+        }
+    }
+    // printf("...Exited");
 }
 
 void InverseMutation(int *pos)
@@ -512,37 +619,7 @@ void InverseMutation(int *pos)
     while (lower == upper)
         upper = rand() % ROW;
 
-    if (lower < upper)
-        reverse(pos, lower, upper);
-
-    else
-    {
-        int prev_low = lower;
-        while (prev_low != upper)
-        {
-            swap(pos, lower, upper);
-            lower = (lower + 1) % ROW;
-            if (upper - 1 == -1)
-                upper = ROW - 1;
-            else
-                --upper;
-        }
-    }
-}
-
-void VelocityMutation(int *posi, float *velo)
-{
-    float vel = avg_vel(velo);
-    int jd = (int)(ROW * vel);
-    if (jd % 2 != 0)
-        jd -= 1;
-
-    int pos[jd];
-    for (int f = 0; f < jd; f++)
-        pos[f] = rand() % ROW;
-
-    for (int d = 0; d < jd; d += 2)
-        swap(posi, pos[d], pos[d + 1]);
+    reverse(pos, lower, upper);
 }
 
 void Cyclic_Crossover(int *pos, int *tour)
@@ -585,25 +662,13 @@ void simulated_annealing(int *tour, double initial_temp, double cooling_rate)
         int i = rand() % n;
         int j = rand() % n;
         while (i == j)
-        {
             j = rand() % n;
-        }
-        if (i > j)
-        {
-            int temp = i;
-            i = j;
-            j = temp;
-        }
 
         reverse(new_tour, i, j);
 
         double current_cost = fitness(tour);
-        // for (int k = 0; k < n; k++)
-        //     current_cost += matrix[tour[k]][tour[(k + 1) % n]];
 
         double new_cost = fitness(new_tour);
-        // for (int k = 0; k < n; k++)
-        //     new_cost += matrix[new_tour[k]][new_tour[(k + 1) % n]];
 
         if (new_cost < current_cost)
             memcpy(tour, new_tour, n * sizeof(int));
@@ -650,11 +715,12 @@ void Swap_Operator(int *tour)
 {
     bool improved = false;
     int tmp_tour[ROW];
+    memcpy(tmp_tour, tour, ROW * sizeof(int));
+
     for (int i = 0; i < ROW - 1; i++)
     {
         for (int j = i + 1; j < ROW; j++)
         {
-            memcpy(tmp_tour, tour, ROW * sizeof(int));
             swap(tmp_tour, i, j);
             double Before = fitness(tour);
             double After = fitness(tmp_tour);
@@ -666,9 +732,11 @@ void Swap_Operator(int *tour)
                 improved = true;
                 break;
             }
+            else
+                swap(tmp_tour, i, j);
         }
-        // if (improved)
-        //     break;
+        if (improved)
+            break;
     }
 }
 
@@ -794,63 +862,29 @@ void Simul_Annel_3_Opt(int *path, double temperature, double cooling_rate)
 //     // printf("...Exited");
 // }
 
-void rgibnnm(int *tour)
-{
-    // printf("Entered");
-    int n = ROW;
-    int x = rand() % n;
-
-    // Select a random gene
-    int gene = x;
-    // Find the nearest neighbor of the selected gene
-    int nearest = -1;
-    float min_dist = FLT_MAX;
-    for (int i = 0; i < n; i++)
-    {
-        if (i != gene)
-        {
-            float dist = distance(tour[gene], tour[i]);
-            if (dist < min_dist)
-            {
-                min_dist = dist;
-                nearest = i;
-            }
-        }
-    }
-
-    // Insert the selected gene beside its nearest neighbor
-    if (nearest != -1)
-    {
-        int temp = tour[gene];
-        if (gene < nearest)
-        {
-            for (int i = gene; i < nearest; i++)
-                tour[i] = tour[i + 1];
-
-            tour[nearest] = temp;
-        }
-        else
-        {
-            for (int i = gene; i > nearest + 1; i--)
-                tour[i] = tour[i - 1];
-
-            tour[nearest + 1] = temp;
-        }
-        // if (nearest != ROW - 1)
-        // swap(tour, gene, (nearest + 1) % ROW);
-        // else
-        //     swap(tour, gene, nearest - 1);
-    }
-    // printf("...Exited");
-}
-
 void reverse(int *tour, int i, int j)
 {
-    while (i < j)
+    if (i < j)
     {
-        swap(tour, i, j);
-        i++;
-        j--;
+        while (i < j)
+        {
+            swap(tour, i, j);
+            i++;
+            j--;
+        }
+    }
+    else
+    {
+        int prev_low = i;
+        while (prev_low != j)
+        {
+            swap(tour, i, j);
+            i = (i + 1) % ROW;
+            if (j - 1 == -1)
+                j = ROW - 1;
+            else
+                --j;
+        }
     }
 }
 
@@ -963,4 +997,13 @@ void formatTime(double seconds)
     if (minutes > 0 || hours > 0)
         printf("%d min, ", minutes);
     printf("%d sec", remainingSeconds);
+}
+
+float max_velocity(float *vel)
+{
+    float max = 0;
+    for (int i = 0; i < ROW; i++)
+        max = (vel[i] > max) ? vel[i] : max;
+
+    return max;
 }
