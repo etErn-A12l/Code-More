@@ -10,7 +10,7 @@ function Counter(props) {
     if (props.value !== 0) {
       cl += " bg-blue-500 px-7";
     } else {
-      cl += " bg-yellow-500 px-4";
+      cl += " bg-yellow-500 px-4 text-black font-semibold";
     }
     return cl;
   }

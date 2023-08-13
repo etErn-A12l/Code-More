@@ -15,3 +15,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#Counter-h1 {
+  font-size: xx-large;
+  padding: 1.2rem;
+}

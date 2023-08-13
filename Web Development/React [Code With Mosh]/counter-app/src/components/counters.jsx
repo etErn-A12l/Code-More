@@ -15,11 +15,6 @@ function Counters() {
   const [counters, setCounters] = useState([0, 0, 0, 0]);
 
   function getTotal() {
-    // let total = 0;
-    // for (let i = 0; i < counters.length; i++) {
-    //   total += counters[i];
-    // }
-    // return total;
     return counters.reduce((total, currentValue) => total + currentValue, 0);
   }
 
@@ -48,16 +43,30 @@ function Counters() {
     setCounters([...counters, 0]);
   }
 
+  
+  const resetCounters = () => {
+    setCounters([0, 0, 0, 0]); // Reset to initial values
+  };
+
   return (
     <div>
       <Navbar total={getTotal()} />
       <div className="ml-10">
+        <div className="flex">
         <button
           onClick={addCounter}
-          className=" bg-green-600 mx-4 px-3 py-2 text-white rounded-lg"
+          className=" bg-lime-500 mx-4 px-3 py-2 text-white rounded-lg"
         >
           Add +
         </button>
+        <button
+          onClick={resetCounters}
+          className="bg-cyan-500 mx-2 px-3 py-2 text-white rounded-lg"
+        >
+          Reset
+        </button>
+        </div>
+        
 
         {counters.map((value, index) => (
           <Counter
